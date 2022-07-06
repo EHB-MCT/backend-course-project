@@ -14,7 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('questions', function (Blueprint $table) {
+            // Auto-incrementing id field of type bigInteger
             $table->id();
+
+            // Survey_id and foreign relation
+            $table->BigInteger('survey_id')->unsigned();
+            $table->foreign('survey_id')->references('id')->on('surveys');
+
+            // The question
+            $table->text('question');
+
+            // Store the creation- and update-time of a row
             $table->timestamps();
         });
     }
