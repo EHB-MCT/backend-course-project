@@ -141,4 +141,8 @@ To keep the JavaScript up-to-date run:
         <a href="https://advancedwebtuts.com/tutorial/how-to-add-two-string-type-variables-in-laravel">advancedwebtuts</a></br>
         Concat two string variables in laravel
     </li>
+    <li>
+        <a href="https://www.youtube.com/watch?v=CNCE1gts2Yw">Eddie Jaoude</a></br>
+        Protected my main branch from accidental commits
+    </li>
 </ul>
