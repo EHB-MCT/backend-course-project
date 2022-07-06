@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Question;
 use App\Models\Survey;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory($number)->create();
         Survey::factory(random_int(User::all()->count()*2,User::all()->count()*3))->create();
+        Question::factory(random_int(Survey::all()->count()*2,Survey::all()->count()*3))->create();
 
         $user = new User();
         $user->name = 'Some User';
@@ -32,5 +33,10 @@ class DatabaseSeeder extends Seeder
         $survey->user_id = 1;
         $survey->list_name = 'Lijstje 1';
         $survey->save();
+
+        $question = new Question();
+        $question->survey_id = 2;
+        $question->question = 'Een vraag aan u...';
+        $question->save();
     }
 }

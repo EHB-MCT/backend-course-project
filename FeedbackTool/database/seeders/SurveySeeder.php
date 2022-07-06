@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Survey;
 use Illuminate\Database\Seeder;
 
 class SurveySeeder extends Seeder
@@ -14,6 +14,9 @@ class SurveySeeder extends Seeder
      */
     public function run()
     {
-        //
+        $survey = new Survey();
+        $survey->user_id = 1;
+        $survey->list_name = 'Een raar lijstje';
+        $survey->save();
     }
 }
