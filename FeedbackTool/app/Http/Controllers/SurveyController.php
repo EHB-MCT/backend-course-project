@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use App\Models\Survey;
 use Illuminate\Http\Request;
 
@@ -9,8 +10,13 @@ class SurveyController extends Controller
 {
     public static function all()
     {
-        $data = Survey::all();
+        return Survey::all();
+    }
 
-        return $data;
+    public static function detail($id)
+    {
+        $survey = Survey::firstWhere('id', $id);
+        
+        return $survey ;
     }
 }
