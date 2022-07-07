@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
 
         $survey = new Survey();
         $survey->user_id = 1;
-        $survey->list_name = 'Lijstje 1';
+        $survey->survey_name = 'Lijstje 1';
         $survey->save();
 
         $question = new Question();

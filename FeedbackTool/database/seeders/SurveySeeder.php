@@ -16,7 +16,7 @@ class SurveySeeder extends Seeder
     {
         $survey = new Survey();
         $survey->user_id = 1;
-        $survey->list_name = 'Een raar lijstje';
+        $survey->survey_name = 'Een raar lijstje';
         $survey->save();
     }
 }

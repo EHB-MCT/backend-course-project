@@ -19,7 +19,7 @@ class SurveyFactory extends Factory
     {
         return [
             'user_id' => random_int(1,User::all()->count()),
-            'list_name' => $this->faker->safeColorName(),
+            'survey_name' => $this->faker->safeColorName(),
         ];
     }
 }

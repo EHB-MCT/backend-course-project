@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
 
             // Name of the list
-            $table->string('list_name');
+            $table->string('survey_name');
 
             // Store the creation- and update-time of a row
             $table->timestamps();
