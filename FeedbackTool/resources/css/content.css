@@ -1,0 +1,12 @@
+header,
+main {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 50px 20%;
+}
+
+header {
+    font-size: 22px;
+    font-weight: 600;
+}

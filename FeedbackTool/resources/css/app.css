@@ -1,9 +1,10 @@
 @import "nav.css";
-
+@import "content.css";
+@import "list.css";
 
 *,
 body {
-    font-family: Roboto;
+    font-family: Roboto, serif;
     margin: 0;
     padding: 0;
 }
