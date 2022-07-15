@@ -1,0 +1,16 @@
+main a {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 18px;
+    padding: 25px 0 5px 10px;
+    border-bottom: 1px dotted var(--black);
+}
+
+main div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 18px;
+    padding: 25px 0 5px 10px;
+}

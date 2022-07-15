@@ -1,0 +1,53 @@
+nav {
+    Color: var(--black);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: var(--maincolor);
+    width: 100%;
+}
+
+nav a svg,
+nav a img {
+    height: var(--navheight);
+}
+
+nav div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: var(--navheight);
+}
+
+nav div div button {
+    background-color: var(--maincolor);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    min-width: 200px;
+    border: none;
+}
+nav div div button div {
+    font-size: 20px;
+    font-weight: 500;
+    padding-right: 20px;
+}
+
+.navlink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 500;
+    min-width: 200px;
+    height: 100%;
+}
+
+nav div .active {
+    background-color: var(--white);
+}
+
+.logout {
+    background-color: var(--logoutcolor);
+}
