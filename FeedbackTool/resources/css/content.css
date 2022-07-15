@@ -6,7 +6,8 @@ main {
     margin: 50px 20%;
 }
 
-header {
+.title {
     font-size: 22px;
     font-weight: 600;
+    padding: 15px 0;
 }

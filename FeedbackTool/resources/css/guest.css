@@ -1,0 +1,18 @@
+.guest {
+    display: flex;
+    /*flex-direction: column;*/
+    justify-content: center;
+    width: 100vw;
+}
+
+.guest div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /*align-items: center;*/
+}
+
+.guest img,
+.guest svg {
+    height: var(--navheight);
+}
