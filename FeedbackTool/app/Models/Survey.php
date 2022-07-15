@@ -11,7 +11,7 @@ class Survey extends Model
 
     protected $fillable = [
         'user_id',
-        'list_name',
+        'survey_name',
     ];
 
     public function user() {

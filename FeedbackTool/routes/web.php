@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,5 +21,13 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/surveys', function () {
+    return view('surveys')->with('surveys', SurveyController::all());
+})->middleware(['auth'])->name('surveys');
+
+Route::get('/survey', function () {
+    return view('survey')->with('survey', SurveyController::detail($_GET['id']));
+})->middleware(['auth'])->name('survey');
 
 require __DIR__.'/auth.php';
