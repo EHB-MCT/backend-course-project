@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use App\Models\Survey;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
@@ -45,11 +46,29 @@ class QuestionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        // collect variables
+        $user_id = Auth::user()->getAuthIdentifier();
+        $surveys = Survey::where("user_id", $user_id)->get();
+        $survey_id = $request->survey_id;
+
+        // Check if the list the user tries to add a question to is his or hers
+        // and not edited in the hidden input field
+        foreach ($surveys as $survey){
+            if($survey->id == $survey_id){
+                Question::create([
+                    'survey_id' => $survey_id,
+                    'question' => $request->question,
+                ]);
+                return redirect()->route('survey', ['id' => $survey_id]);
+            }
+        }
+
+        // return to dashboard if list is not of this user
+        return redirect()->route('dashboard');
     }
 
     /**

@@ -39,7 +39,7 @@ class SurveyController extends Controller
     {
         $user_id = Auth::user()->getAuthIdentifier();
 
-        $upload = Survey::create([
+        Survey::create([
             'user_id' => $user_id,
             'survey_name' => $request->survey_name,
         ]);

@@ -13,4 +13,12 @@
 
     @endforeach
 
+    <form action="{{ route('addQuestion') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+
+        <input type="hidden" name="survey_id"  value="{{ $_GET['id'] }}">
+        <input type="text" name="question" placeholder="someText" />
+        <button type="submit">submit</button>
+    </form>
+
 </x-app-layout>

@@ -34,4 +34,7 @@ Route::get('/survey', function () {
 Route::post('addSurvey', [SurveyController::class, "store"]
 )->middleware(['auth'])->name('addSurvey');
 
+Route::post('addQuestion', [QuestionController::class, "store"]
+)->middleware(['auth'])->name('addQuestion');
+
 require __DIR__.'/auth.php';
