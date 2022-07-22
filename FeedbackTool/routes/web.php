@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,11 +24,14 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/surveys', function () {
-    return view('surveys')->with('surveys', SurveyController::all());
+    return view('surveys')->with('surveys', SurveyController::index());
 })->middleware(['auth'])->name('surveys');
 
 Route::get('/survey', function () {
-    return view('survey')->with('survey', SurveyController::detail($_GET['id']));
+    return view('survey')->with('survey', QuestionController::indexOnSurveyId($_GET['id']));
 })->middleware(['auth'])->name('survey');
+
+Route::post('addSurvey', [SurveyController::class, "store"]
+)->middleware(['auth'])->name('addSurvey');
 
 require __DIR__.'/auth.php';
