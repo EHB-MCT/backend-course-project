@@ -1,10 +1,10 @@
 <nav>
     <div>
-        <a class="navlink " href="{{ route('dashboard') }}">
+        <a class="navlink " href="{{ route('welcome') }}">
             <x-application-logo />
         </a>
-        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-            {{ __('Dashboard') }}
+        <x-nav-link :href="route('clients')" :active="request()->routeIs('clients')">
+            {{ __('Clients') }}
         </x-nav-link>
         <x-nav-link :href="route('surveys')" :active="request()->routeIs('surveys', 'survey')">
             {{ __('Surveys') }}
