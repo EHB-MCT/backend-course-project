@@ -18,6 +18,18 @@ class UserController extends Controller
         return User::all();
     }
 
+    public static function indexOnUserId ($id)
+    {
+        // Get the client with this id
+        $client = User::firstWhere('id', $id);
+
+        // TODO
+        // With $client->... add needed data for showing stats
+
+        // return the client
+        return $client;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

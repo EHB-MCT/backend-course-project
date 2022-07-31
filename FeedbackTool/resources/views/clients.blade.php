@@ -1,16 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
         <h2>
-            {{ __('Survey') }}
+            {{ __('Client') }}
         </h2>
     </x-slot>
 
-    @foreach ($users as $user)
+    @foreach ($clients as $client)
 
-        <a href="{{ route('clients', ['id' => $user->id]) }}">
+        <a href="{{ route('client', ['id' => $client->id]) }}">
 
             <div>
-                {{ $user->name }}
+                {{ $client->name }}
             </div>
             <div>
                 <i class="fas fa-plus"></i>
