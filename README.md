@@ -135,7 +135,8 @@ To keep the JavaScript up-to-date run:
     </li>
     <li>
         <a href="https://github.com/EHB-MCT/full-projects-4-goat">Group work</a></br>
-        Model relations
+        Model relations</br>
+        Roles and permissions
     </li>
     <li>
         <a href="https://advancedwebtuts.com/tutorial/how-to-add-two-string-type-variables-in-laravel">advancedwebtuts</a></br>
@@ -144,5 +145,10 @@ To keep the JavaScript up-to-date run:
     <li>
         <a href="https://www.youtube.com/watch?v=CNCE1gts2Yw">Eddie Jaoude</a></br>
         Protected my main branch from accidental commits
+    </li>
+    <li>
+        <a href="https://spatie.be/docs/laravel-permission/v5/installation-laravel">Spatie</a></br>
+        Spatie setup on laravel</br>
+        Roles and permissions
     </li>
 </ul>
