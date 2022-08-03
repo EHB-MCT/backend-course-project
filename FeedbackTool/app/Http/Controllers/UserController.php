@@ -19,17 +19,25 @@ class UserController extends Controller
         $users = collect();
 
         switch ($user){
+
+            // The users the admin can see
             case ($user->can('admin')):
-                $users = User::all();
+                $users->admins = User::role('admin')->get();
+                $users->moderators = User::role('moderator')->get();
+                $users->caretakers = fillCaretaker(User::role('caretaker')->get());
                 break;
+
+            // The users the moderator can see
             case ($user->can('moderate')):
-                $caretakers = User::role('caretaker')->get();
-                $users->caretakers = fillCaretaker($caretakers);
+                $users->caretakers = fillCaretaker(User::role('caretaker')->get());
                 break;
+
+            // The users the caretaker can see
             case ($user->can('caretaker')):
-                $caretakers = User::where("id", $user->id)->get();
-                $users->caretakers = fillCaretaker($caretakers);
+                $users->caretakers = fillCaretaker(User::where("id", $user->id)->get());
                 break;
+
+            // Redirect client to his own page
             case ($user->can('client')):
                 // A redirection
                 break;

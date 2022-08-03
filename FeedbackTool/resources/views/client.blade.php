@@ -1,17 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
         <h2>
-            {{ __($client->name) }}
+            {{ __($user->name) }}
         </h2>
     </x-slot>
 
     <div>
         <ul>
             <li>
-                {{ $client->name }}
+                {{ $user->name }}
             </li>
             <li>
-                {{ $client->email }}
+                {{ $user->email }}
             </li>
         </ul>
     </div>

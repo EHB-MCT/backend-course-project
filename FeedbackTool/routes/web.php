@@ -27,12 +27,12 @@ Route::get('/welcome', function () {
 
 // show users
 Route::get('/clients', function () {
-    return view('clients')->with('clients', UserController::index());
+    return view('clients')->with('users', UserController::index());
 })->middleware(['auth'])->name('clients');
 
 // show user
 Route::get('/client', function () {
-    return view('client')->with('client', UserController::indexOnUserId($_GET['id']));
+    return view('client')->with('user', UserController::indexOnUserId($_GET['id']));
 })->middleware(['auth'])->name('client');
 
 // show surveys

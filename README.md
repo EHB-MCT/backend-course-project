@@ -151,4 +151,8 @@ To keep the JavaScript up-to-date run:
         Spatie setup on laravel</br>
         Roles and permissions
     </li>
+    <li>
+        <a href="https://newbedev.com/how-to-manually-create-a-new-empty-eloquent-collection-in-laravel-4">Newbedev</a></br>
+        Make clean collection instead of array
+    </li>
 </ul>
