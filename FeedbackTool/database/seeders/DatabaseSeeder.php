@@ -98,25 +98,29 @@ class DatabaseSeeder extends Seeder
         User::factory() -> create([
             'name' => 'Client a',
             'email' => 'clienta@gmail.com',
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
+            'caretaker_id' => 1,
         ])->assignRole($client);
 
         User::factory() -> create([
             'name' => 'Client b',
             'email' => 'clientb@gmail.com',
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
+            'caretaker_id' => 2,
         ])->assignRole($client);
 
         User::factory() -> create([
             'name' => 'Client c',
             'email' => 'clientc@gmail.com',
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
+            'caretaker_id' => 1,
         ])->assignRole($client);
 
         User::factory() -> create([
             'name' => 'Client d',
             'email' => 'clientd@gmail.com',
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
+            'caretaker_id' => 2,
         ])->assignRole($client);
 
         Survey::factory(random_int(User::all()->count()*4,User::all()->count()*6))->create();
