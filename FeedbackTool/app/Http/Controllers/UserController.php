@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,8 +15,27 @@ class UserController extends Controller
      */
     public static function index()
     {
-        // Get all Users
-        return User::all();
+        $user = Auth::user();
+        $users = collect();
+
+        switch ($user){
+            case ($user->can('admin')):
+                $users = User::all();
+                break;
+            case ($user->can('moderate')):
+                $caretakers = User::role('caretaker')->get();
+                $users->caretakers = fillCaretaker($caretakers);
+                break;
+            case ($user->can('caretaker')):
+                $caretakers = User::where("id", $user->id)->get();
+                $users->caretakers = fillCaretaker($caretakers);
+                break;
+            case ($user->can('client')):
+                // A redirection
+                break;
+        }
+//        dd($users);
+        return $users;
     }
 
     public static function indexOnUserId ($id)
@@ -95,4 +115,11 @@ class UserController extends Controller
     {
         //
     }
+}
+
+function fillCaretaker($caretakers){
+    foreach ($caretakers as $caretaker){
+        $caretaker->clients = User::where("caretaker_id", $caretaker->id)->get();
+    }
+    return $caretakers;
 }

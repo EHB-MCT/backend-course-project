@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         Permission::create(["name" => "admin"]);
 
         // Only moderator and up
-        Permission::create(["name" => "moderator"]);
+        Permission::create(["name" => "moderate"]);
 
         // Only caretaker and up
         Permission::create(["name" => "caretaker"]);
@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
 
         // Moderator
         $moderator = Role::create(["name" => "moderator"])
-            ->givePermissionTo("moderator", "caretaker", "client");
+            ->givePermissionTo("moderate", "caretaker", "client");
 
         // Caretaker
         $caretaker = Role::create(["name" => "caretaker"])
@@ -99,28 +99,28 @@ class DatabaseSeeder extends Seeder
             'name' => 'Client a',
             'email' => 'clienta@gmail.com',
             'password' => Hash::make('password'),
-            'caretaker_id' => 1,
+            'caretaker_id' => 5,
         ])->assignRole($client);
 
         User::factory() -> create([
             'name' => 'Client b',
             'email' => 'clientb@gmail.com',
             'password' => Hash::make('password'),
-            'caretaker_id' => 2,
+            'caretaker_id' => 6,
         ])->assignRole($client);
 
         User::factory() -> create([
             'name' => 'Client c',
             'email' => 'clientc@gmail.com',
             'password' => Hash::make('password'),
-            'caretaker_id' => 1,
+            'caretaker_id' => 5,
         ])->assignRole($client);
 
         User::factory() -> create([
             'name' => 'Client d',
             'email' => 'clientd@gmail.com',
             'password' => Hash::make('password'),
-            'caretaker_id' => 2,
+            'caretaker_id' => 6,
         ])->assignRole($client);
 
         Survey::factory(random_int(User::all()->count()*4,User::all()->count()*6))->create();
