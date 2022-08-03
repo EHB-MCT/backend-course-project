@@ -42,7 +42,7 @@ class UserController extends Controller
                 // A redirection
                 break;
         }
-//        dd($users);
+
         return $users;
     }
 

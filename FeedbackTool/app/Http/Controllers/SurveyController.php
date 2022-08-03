@@ -15,8 +15,23 @@ class SurveyController extends Controller
      */
     public static function index()
     {
-        // Get all surveys
-        return Survey::all();
+        $user = Auth::user();
+        $surveys = collect();
+
+        switch ($user) {
+
+            // The surveys the moderator can see (all)
+            case ($user->can('moderate')):
+                $surveys = Survey::all();
+                break;
+
+            // The surveys the caretaker can see (own)
+            case ($user->can('caretaker')):
+                $surveys = Survey::where("user_id", $user->id)->get();
+                break;
+        }
+
+        return $surveys;
     }
 
     /**
