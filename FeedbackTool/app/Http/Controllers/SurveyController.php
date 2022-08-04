@@ -62,6 +62,10 @@ class SurveyController extends Controller
     {
         $user_id = Auth::user()->getAuthIdentifier();
 
+        $request->validate([
+            'survey_name' => ['required', 'string', 'max:255'],
+        ]);
+
         Survey::create([
             'user_id' => $user_id,
             'survey_name' => $request->survey_name,

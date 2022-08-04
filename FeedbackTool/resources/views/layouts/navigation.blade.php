@@ -3,32 +3,38 @@
         <a class="navlink " href="{{ route('welcome') }}">
             <x-application-logo />
         </a>
-        <x-nav-link :href="route('clients')" :active="request()->routeIs('clients')">
-            @if(Auth::user()->can('admin'))
-                {{ __('All Users') }}
-            @elseif(Auth::user()->can('moderate'))
-                {{ __('Caretakers') }}
-            @else
-                {{ __('Clients') }}
-            @endif
-        </x-nav-link>
-        <x-nav-link :href="route('public-surveys')" :active="request()->routeIs('public-surveys')">
-            {{ __('Public-surveys') }}
-        </x-nav-link>
-        <x-nav-link :href="route('surveys')" :active="request()->routeIs('surveys', 'survey')">
+        @if(Auth::user()->hasRole('caretaker'))
+            <x-nav-link :href="route('clients')" :active="request()->routeIs('clients', 'client')">
+                @if(Auth::user()->can('admin'))
+                    {{ __('All Users') }}
+                @elseif(Auth::user()->can('moderate'))
+                    {{ __('Caretakers') }}
+                @else
+                    {{ __('Clients') }}
+                @endif
+            </x-nav-link>
+            <x-nav-link :href="route('public-surveys')" :active="request()->routeIs('public-surveys')">
+                {{ __('Public-surveys') }}
+            </x-nav-link>
+            <x-nav-link :href="route('surveys')" :active="request()->routeIs('surveys', 'survey')">
+                @if(Auth::user()->can('moderate'))
+                    {{ __('All surveys') }}
+                @else
+                    {{ __('Surveys') }}
+                @endif
+            </x-nav-link>
+            <x-nav-link :href="route('sessions')" :active="request()->routeIs('sessions', 'session')">
+                {{ __('Sessions') }}
+            </x-nav-link>
             @if(Auth::user()->can('moderate'))
-                {{ __('All surveys') }}
             @else
-                {{ __('Surveys') }}
+                <x-nav-link :href="route('statistics')" :active="request()->routeIs('statistics')">
+                    {{ __('Statistics') }}
+                </x-nav-link>
             @endif
-        </x-nav-link>
-        <x-nav-link :href="route('welcome')" :active="request()->routeIs('sessions')">
-            {{ __('Sessions') }}
-        </x-nav-link>
-        @if(Auth::user()->can('moderate'))
         @else
-            <x-nav-link :href="route('statistics')" :active="request()->routeIs('statistics')">
-                {{ __('Statistics') }}
+            <x-nav-link :href="route('welcome')" :active="request()->routeIs('reply')">
+                {{ __('Fill in survey') }}
             </x-nav-link>
         @endif
     </div>

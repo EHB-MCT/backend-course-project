@@ -53,22 +53,26 @@ class QuestionController extends Controller
         // collect variables
         $user_id = Auth::user()->getAuthIdentifier();
         $surveys = Survey::where("user_id", $user_id)->get();
-        $survey_id = $request->survey_id;
+
+        $request->validate([
+            'survey_id' => ['required', 'integer'],
+            'question' => ['required', 'string', 'max:255'],
+        ]);
 
         // Check if the list the user tries to add a question to is his or hers
         // and not edited in the hidden input field
         foreach ($surveys as $survey){
-            if($survey->id == $survey_id){
+            if($survey->id == $request->survey_id){
                 Question::create([
-                    'survey_id' => $survey_id,
+                    'survey_id' => $request->survey_id,
                     'question' => $request->question,
                 ]);
-                return redirect()->route('survey', ['id' => $survey_id]);
+                return redirect()->route('survey', ['id' => $request->survey_id]);
             }
         }
 
         // return to dashboard if list is not of this user
-        return redirect()->route('dashboard');
+        return redirect()->route('welcome');
     }
 
     /**

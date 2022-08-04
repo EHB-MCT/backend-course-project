@@ -19,50 +19,64 @@ Route::get('/welcome', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('welcome');
 
-/*
-|--------------------------------------------------------------------------
-| Get request pages
-|--------------------------------------------------------------------------
-*/
+Route::group(['middleware' => ['permission:caretaker']], function () {
 
-// show users
-Route::get('/clients', function () {
-    return view('clients')->with('users', UserController::index());
-})->middleware(['auth'])->name('clients');
-Route::get('/statistics', function () {
-    return view('clients')->with('users', UserController::index());
-})->middleware(['auth'])->name('statistics');
+    /*
+    |--------------------------------------------------------------------------
+    | Get request pages
+    |--------------------------------------------------------------------------
+    */
 
-// show user
-Route::get('/client', function () {
-    return view('client')->with('user', UserController::indexOnUserId($_GET['id']));
-})->middleware(['auth'])->name('client');
+    // show users so you can get to their statistics
+    Route::get('/clients', function () {
+        return view('clients')->with('users', UserController::index());
+    })->middleware(['auth'])->name('clients');
+    Route::get('/statistics', function () {
+        return view('clients')->with('users', UserController::index());
+    })->middleware(['auth'])->name('statistics');
 
-// show surveys
-Route::get('/public-surveys', function () {
-    return view('surveys')->with('surveys', SurveyController::index());
-})->middleware(['auth'])->name('public-surveys');
-Route::get('/surveys', function () {
-    return view('surveys')->with('surveys', SurveyController::privateSurveys());
-})->middleware(['auth'])->name('surveys');
+    // show user and their statistics
+    Route::get('/client', function () {
+        return view('client')->with('user', UserController::indexOnUserId($_GET['id']));
+    })->middleware(['auth'])->name('client');
 
-// Show questions corresponding to a survey
-Route::get('/survey', function () {
-    return view('survey')->with('survey', QuestionController::indexOnSurveyId($_GET['id']));
-})->middleware(['auth'])->name('survey');
+    // show public- and private surveys (still all visible to moderators and up)
+    Route::get('/public-surveys', function () {
+        return view('surveys')->with('surveys', SurveyController::index());
+    })->middleware(['auth'])->name('public-surveys');
+    Route::get('/surveys', function () {
+        return view('surveys')->with('surveys', SurveyController::privateSurveys());
+    })->middleware(['auth'])->name('surveys');
 
-/*
-|--------------------------------------------------------------------------
-| Post requests
-|--------------------------------------------------------------------------
-*/
+    // Show questions corresponding to a survey
+    Route::get('/survey', function () {
+        return view('survey')->with('survey', QuestionController::indexOnSurveyId($_GET['id']));
+    })->middleware(['auth'])->name('survey');
 
-// Create a new survey
-Route::post('addSurvey', [SurveyController::class, "store"]
-)->middleware(['auth'])->name('addSurvey');
+    // Show sessions
+    Route::get('/sessions', function () {
+        return view('dashboard');
+    })->middleware(['auth'])->name('sessions');
 
-// Add a new Question to a survey
-Route::post('addQuestion', [QuestionController::class, "store"]
-)->middleware(['auth'])->name('addQuestion');
+    // Show sessions
+    Route::get('/session', function () {
+        return view('dashboard');
+    })->middleware(['auth'])->name('session');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Post requests
+    |--------------------------------------------------------------------------
+    */
+
+    // Create a new survey
+    Route::post('addSurvey', [SurveyController::class, "store"]
+    )->middleware(['auth'])->name('addSurvey');
+
+    // Add a new Question to a survey
+    Route::post('addQuestion', [QuestionController::class, "store"]
+    )->middleware(['auth'])->name('addQuestion');
+
+});
 
 require __DIR__.'/auth.php';
