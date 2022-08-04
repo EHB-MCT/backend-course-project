@@ -36,8 +36,11 @@ Route::get('/client', function () {
 })->middleware(['auth'])->name('client');
 
 // show surveys
-Route::get('/surveys', function () {
+Route::get('/public-surveys', function () {
     return view('surveys')->with('surveys', SurveyController::index());
+})->middleware(['auth'])->name('public-surveys');
+Route::get('/surveys', function () {
+    return view('surveys')->with('surveys', SurveyController::privateSurveys());
 })->middleware(['auth'])->name('surveys');
 
 // Show questions corresponding to a survey

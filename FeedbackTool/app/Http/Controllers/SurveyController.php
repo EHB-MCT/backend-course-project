@@ -15,6 +15,14 @@ class SurveyController extends Controller
      */
     public static function index()
     {
+        // TODO
+        // Give survey a boolean for it to be public or a private survey
+        // Only get the public lists on the public page
+        return Survey::all();
+    }
+
+    public static function privateSurveys()
+    {
         $user = Auth::user();
         $surveys = collect();
 

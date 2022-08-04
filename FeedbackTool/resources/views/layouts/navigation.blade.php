@@ -4,10 +4,26 @@
             <x-application-logo />
         </a>
         <x-nav-link :href="route('clients')" :active="request()->routeIs('clients')">
-            {{ __('Clients') }}
+            @if(Auth::user()->can('admin'))
+                {{ __('All Users') }}
+            @elseif(Auth::user()->can('moderate'))
+                {{ __('Caretakers') }}
+            @else
+                {{ __('Clients') }}
+            @endif
+        </x-nav-link>
+        <x-nav-link :href="route('public-surveys')" :active="request()->routeIs('public-surveys')">
+            {{ __('Public-surveys') }}
         </x-nav-link>
         <x-nav-link :href="route('surveys')" :active="request()->routeIs('surveys', 'survey')">
-            {{ __('Surveys') }}
+            @if(Auth::user()->can('moderate'))
+                {{ __('All surveys') }}
+            @else
+                {{ __('Surveys') }}
+            @endif
+        </x-nav-link>
+        <x-nav-link :href="route('welcome')" :active="request()->routeIs('sessions')">
+            {{ __('Sessions') }}
         </x-nav-link>
     </div>
     <div>
