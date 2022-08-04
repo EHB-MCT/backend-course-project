@@ -30,7 +30,7 @@
         @endforeach
 
         <h2>
-            {{ __('Admins') }}
+            {{ __('Moderators') }}
         </h2>
         @foreach ($users->moderators as $mod)
             <a href="{{ route('client', ['id' => $mod->id]) }}">
@@ -106,5 +106,59 @@
         </a>
 
     @endforeach
+
+    <x-auth-card>
+        <form method="POST" action="{{ route('newRegister') }}">
+        @csrf
+
+            @if(Auth::user()->can('admin'))
+                <p class="center title">
+                    {{ __('Register someone else') }}
+                </p>
+            @elseif(Auth::user()->can('moderate'))
+                <p class="center title">
+                    {{ __('Register a caretaker') }}
+                </p>
+            @elseif(Auth::user()->can('caretaker'))
+                <p class="center title">
+                    {{ __('Register a client') }}
+                </p>
+            @endif
+
+            <!-- Validation Errors -->
+            <x-auth-validation-errors :errors="$errors" />
+
+            <!-- Name -->
+            <label>
+                <x-label for="name" :value="__('Name*')" />
+                <x-input id="name" type="text" name="name" :value="old('name')" required autofocus />
+            </label>
+
+            <!-- Email Address -->
+            <label>
+                <x-label for="email" :value="__('Email*')" />
+                <x-input id="email" type="email" name="email" :value="old('email')" required />
+            </label>
+
+            <!-- Password -->
+            <label>
+                <x-label for="password" :value="__('Password*')" />
+                <x-input id="password" type="password" name="password" required autocomplete="new-password" />
+            </label>
+
+            <!-- Confirm Password -->
+            <label>
+                <x-label for="password_confirmation" :value="__('Confirm password*')" />
+                <x-input id="password_confirmation" type="password" name="password_confirmation" required />
+            </label>
+
+            <div class="half">
+                <button type="submit" class="registerSubmit">
+                    {{ __('Register') }}
+                </button>
+            </div>
+
+        </form>
+    </x-auth-card>
 
 </x-app-layout>
