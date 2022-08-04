@@ -25,6 +25,12 @@
         <x-nav-link :href="route('welcome')" :active="request()->routeIs('sessions')">
             {{ __('Sessions') }}
         </x-nav-link>
+        @if(Auth::user()->can('moderate'))
+        @else
+            <x-nav-link :href="route('statistics')" :active="request()->routeIs('statistics')">
+                {{ __('Statistics') }}
+            </x-nav-link>
+        @endif
     </div>
     <div>
         <x-dropdown>

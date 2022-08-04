@@ -1,8 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2>
-            {{ __('Users') }}
-        </h2>
+        @if(request()->is('clients'))
+            <h2>
+                {{ __('Users') }}
+            </h2>
+        @else
+            <h2>
+                {{ __('Statistics') }}
+            </h2>
+        @endif
     </x-slot>
 
     @can('admin')

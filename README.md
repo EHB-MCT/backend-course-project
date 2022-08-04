@@ -124,6 +124,10 @@ To keep the JavaScript up-to-date run:
         <a href="https://stackoverflow.com/questions/29915514">/how-to-generate-env-file-for-laravel</a></br>
         Create an .env file and a project key
     </li>
+    <li>
+        <a href="https://stackoverflow.com/questions/51116029">/how-to-check-current-url-inside-if-statement-in-laravel-5-6</a></br>
+        Change header title based on what page you are
+    </li>
 </ul>
 
 # <a>Other</a>

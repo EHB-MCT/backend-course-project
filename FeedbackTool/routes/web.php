@@ -29,6 +29,9 @@ Route::get('/welcome', function () {
 Route::get('/clients', function () {
     return view('clients')->with('users', UserController::index());
 })->middleware(['auth'])->name('clients');
+Route::get('/statistics', function () {
+    return view('clients')->with('users', UserController::index());
+})->middleware(['auth'])->name('statistics');
 
 // show user
 Route::get('/client', function () {

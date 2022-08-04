@@ -25,7 +25,7 @@ nav div div button {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    min-width: 200px;
+    min-width: 180px;
     border: none;
 }
 nav div div button div {
@@ -40,7 +40,7 @@ nav div div button div {
     align-items: center;
     font-size: 20px;
     font-weight: 500;
-    min-width: 200px;
+    min-width: 150px;
     height: 100%;
 }
 
