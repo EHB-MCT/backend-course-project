@@ -18,7 +18,7 @@ class Survey extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function Question() {
+    public function question() {
         return $this->hasMany(Question::class);
     }
 }

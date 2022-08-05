@@ -23,22 +23,24 @@ class SurveyController extends Controller
 
     public static function privateSurveys()
     {
-        $user = Auth::user();
+        // Empty init $surveys collection
         $surveys = collect();
 
-        switch ($user) {
+        // Switch case based on the role of the logged-in user
+        switch (Auth::user()) {
 
             // The surveys the moderator can see (all)
-            case ($user->can('moderate')):
+            case (Auth::user()->can('moderate')):
                 $surveys = Survey::all();
                 break;
 
             // The surveys the caretaker can see (own)
-            case ($user->can('caretaker')):
-                $surveys = Survey::where("user_id", $user->id)->get();
+            case (Auth::user()->can('caretaker')):
+                $surveys = Auth::user()->survey()->get();
                 break;
         }
 
+        // return surveys
         return $surveys;
     }
 
@@ -60,14 +62,14 @@ class SurveyController extends Controller
      */
     public static function store(Request $request)
     {
-        $user_id = Auth::user()->getAuthIdentifier();
-
+        // Validate request
         $request->validate([
             'survey_name' => ['required', 'string', 'max:255'],
         ]);
 
+        // Create a new survey
         Survey::create([
-            'user_id' => $user_id,
+            'user_id' => Auth::user()->getAuthIdentifier(),
             'survey_name' => $request->survey_name,
         ]);
 
