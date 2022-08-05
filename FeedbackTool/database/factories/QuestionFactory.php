@@ -19,7 +19,7 @@ class QuestionFactory extends Factory
     {
         return [
             'survey_id' => random_int(1,Survey::all()->count()),
-            'question' => $this->faker->companySuffix(). " " .$this->faker->company(),
+            'question' => "Zou u ooit willen werken voor " .$this->faker->company(),
         ];
     }
 }

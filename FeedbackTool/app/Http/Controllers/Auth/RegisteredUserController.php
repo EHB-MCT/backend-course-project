@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Spatie\Permission\Models\Role;
 
 class RegisteredUserController extends Controller
 {
@@ -49,6 +50,34 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->route('welcome');
+    }
+
+    public function storeLoggedIn(Request $request)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+
+        if ($user->hasRole('caretaker') && !$user->hasRole('moderator')){
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'caretaker_id' => $user->id,
+                'password' => Hash::make($request->password),
+            ])->assignRole(Role::where("name", "client")->get());
+        } else {
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ])->assignRole(Role::where("name", "caretaker")->get());
+        }
+
+        return redirect()->route('clients');
     }
 }

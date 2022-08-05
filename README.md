@@ -124,6 +124,10 @@ To keep the JavaScript up-to-date run:
         <a href="https://stackoverflow.com/questions/29915514">/how-to-generate-env-file-for-laravel</a></br>
         Create an .env file and a project key
     </li>
+    <li>
+        <a href="https://stackoverflow.com/questions/51116029">/how-to-check-current-url-inside-if-statement-in-laravel-5-6</a></br>
+        Change header title based on what page you are
+    </li>
 </ul>
 
 # <a>Other</a>
@@ -135,7 +139,8 @@ To keep the JavaScript up-to-date run:
     </li>
     <li>
         <a href="https://github.com/EHB-MCT/full-projects-4-goat">Group work</a></br>
-        Model relations
+        Model relations</br>
+        Roles and permissions
     </li>
     <li>
         <a href="https://advancedwebtuts.com/tutorial/how-to-add-two-string-type-variables-in-laravel">advancedwebtuts</a></br>
@@ -144,5 +149,14 @@ To keep the JavaScript up-to-date run:
     <li>
         <a href="https://www.youtube.com/watch?v=CNCE1gts2Yw">Eddie Jaoude</a></br>
         Protected my main branch from accidental commits
+    </li>
+    <li>
+        <a href="https://spatie.be/docs/laravel-permission/v5/installation-laravel">Spatie</a></br>
+        Spatie setup on laravel</br>
+        Roles and permissions
+    </li>
+    <li>
+        <a href="https://newbedev.com/how-to-manually-create-a-new-empty-eloquent-collection-in-laravel-4">Newbedev</a></br>
+        Make clean collection instead of array
     </li>
 </ul>

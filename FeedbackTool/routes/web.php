@@ -2,39 +2,81 @@
 
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/welcome', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth'])->name('welcome');
 
-Route::get('/surveys', function () {
-    return view('surveys')->with('surveys', SurveyController::index());
-})->middleware(['auth'])->name('surveys');
+Route::group(['middleware' => ['permission:caretaker']], function () {
 
-Route::get('/survey', function () {
-    return view('survey')->with('survey', QuestionController::indexOnSurveyId($_GET['id']));
-})->middleware(['auth'])->name('survey');
+    /*
+    |--------------------------------------------------------------------------
+    | Get request pages
+    |--------------------------------------------------------------------------
+    */
 
-Route::post('addSurvey', [SurveyController::class, "store"]
-)->middleware(['auth'])->name('addSurvey');
+    // show users so you can get to their statistics
+    Route::get('/clients', function () {
+        return view('clients')->with('users', UserController::index());
+    })->middleware(['auth'])->name('clients');
+    Route::get('/statistics', function () {
+        return view('clients')->with('users', UserController::index());
+    })->middleware(['auth'])->name('statistics');
 
-Route::post('addQuestion', [QuestionController::class, "store"]
-)->middleware(['auth'])->name('addQuestion');
+    // show user and their statistics
+    Route::get('/client', function () {
+        return view('client')->with('user', UserController::indexOnUserId($_GET['id']));
+    })->middleware(['auth'])->name('client');
+
+    // show public- and private surveys (still all visible to moderators and up)
+    Route::get('/public-surveys', function () {
+        return view('surveys')->with('surveys', SurveyController::index());
+    })->middleware(['auth'])->name('public-surveys');
+    Route::get('/surveys', function () {
+        return view('surveys')->with('surveys', SurveyController::privateSurveys());
+    })->middleware(['auth'])->name('surveys');
+
+    // Show questions corresponding to a survey
+    Route::get('/survey', function () {
+        return view('survey')->with('survey', QuestionController::indexOnSurveyId($_GET['id']));
+    })->middleware(['auth'])->name('survey');
+
+    // Show sessions
+    Route::get('/sessions', function () {
+        return view('dashboard');
+    })->middleware(['auth'])->name('sessions');
+
+    // Show sessions
+    Route::get('/session', function () {
+        return view('dashboard');
+    })->middleware(['auth'])->name('session');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Post requests
+    |--------------------------------------------------------------------------
+    */
+
+    // Create a new survey
+    Route::post('addSurvey', [SurveyController::class, "store"]
+    )->middleware(['auth'])->name('addSurvey');
+
+    // Add a new Question to a survey
+    Route::post('addQuestion', [QuestionController::class, "store"]
+    )->middleware(['auth'])->name('addQuestion');
+
+});
 
 require __DIR__.'/auth.php';

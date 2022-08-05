@@ -18,8 +18,8 @@ class SurveyFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => random_int(1,User::all()->count()),
-            'survey_name' => $this->faker->safeColorName(),
+            'user_id' => random_int(5,6), // random_int(1,User::all()->count())
+            'survey_name' => "Survey about " .$this->faker->hexColor(),
         ];
     }
 }

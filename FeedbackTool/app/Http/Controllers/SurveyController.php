@@ -15,8 +15,31 @@ class SurveyController extends Controller
      */
     public static function index()
     {
-        // Get all surveys
+        // TODO
+        // Give survey a boolean for it to be public or a private survey
+        // Only get the public lists on the public page
         return Survey::all();
+    }
+
+    public static function privateSurveys()
+    {
+        $user = Auth::user();
+        $surveys = collect();
+
+        switch ($user) {
+
+            // The surveys the moderator can see (all)
+            case ($user->can('moderate')):
+                $surveys = Survey::all();
+                break;
+
+            // The surveys the caretaker can see (own)
+            case ($user->can('caretaker')):
+                $surveys = Survey::where("user_id", $user->id)->get();
+                break;
+        }
+
+        return $surveys;
     }
 
     /**
@@ -38,6 +61,10 @@ class SurveyController extends Controller
     public static function store(Request $request)
     {
         $user_id = Auth::user()->getAuthIdentifier();
+
+        $request->validate([
+            'survey_name' => ['required', 'string', 'max:255'],
+        ]);
 
         Survey::create([
             'user_id' => $user_id,
