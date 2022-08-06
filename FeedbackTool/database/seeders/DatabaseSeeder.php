@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Question;
+use App\Models\Session;
 use App\Models\Survey;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -58,12 +59,11 @@ class DatabaseSeeder extends Seeder
             ->givePermissionTo("client");
 
 
-        $user = new User();
-        $user->name = 'Some User';
-        $user->email = 'user@gmail.com';
-        $user->password = Hash::make('password');
-        $user->save();
-        $user->assignRole($admin);
+        User::create([
+            'name' => 'Some User',
+            'email' => 'user@gmail.com',
+            'password' => Hash::make('password')
+        ])->assignRole($admin);
 
         User::factory() -> create([
             'name' => 'Mike Derycke',
@@ -125,5 +125,14 @@ class DatabaseSeeder extends Seeder
 
         Survey::factory(random_int(User::all()->count()*4,User::all()->count()*6))->create();
         Question::factory(random_int(Survey::all()->count()*2,Survey::all()->count()*3))->create();
+
+        Session::create([
+            'caretaker_id' => 5,
+            'client_id' => 7,
+            'survey_combination_id' => 1,
+            'open_status' => 0,
+            'filled_status' => 0,
+            'duration_time' => now(),
+        ]);
     }
 }

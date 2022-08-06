@@ -10,8 +10,12 @@ class Session extends Model
     use HasFactory;
 
     protected $fillable = [
-        'session_name',
-        'status',
+        'caretaker_id',
+        'client_id',
+        'survey_combination_id',
+        'open_status',
+        'filled_status',
+        'duration_time',
     ];
 
     public function user() {

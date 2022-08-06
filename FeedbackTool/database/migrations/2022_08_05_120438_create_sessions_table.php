@@ -14,7 +14,30 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sessions', function (Blueprint $table) {
+            // Auto-incrementing id field of type bigInteger
             $table->id();
+
+            // Caretaker_id and foreign relation
+            $table->BigInteger('caretaker_id')->unsigned();
+            $table->foreign('caretaker_id')->references('id')->on('users');
+
+            // Client_id and foreign relation
+            $table->BigInteger('client_id')->unsigned();
+            $table->foreign('client_id')->references('id')->on('users');
+
+            // Survey_combination_id
+            $table->BigInteger('survey_combination_id');
+
+            // Open_status
+            $table->Boolean('open_status');
+
+            // Filled_status
+            $table->Boolean('filled_status');
+
+            // Filled_status
+            $table->Timestamp('duration_time');
+
+            // Store the creation- and update-time of a row
             $table->timestamps();
         });
     }
