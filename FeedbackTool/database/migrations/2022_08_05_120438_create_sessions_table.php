@@ -25,14 +25,15 @@ return new class extends Migration
             $table->BigInteger('client_id')->unsigned();
             $table->foreign('client_id')->references('id')->on('users');
 
-            // Survey_combination_id
-            $table->BigInteger('survey_combination_id');
+            // Survlist_id
+            $table->BigInteger('survlist_id')->unsigned();
+            $table->foreign('survlist_id')->references('id')->on('survlists');
 
             // Open_status
-            $table->Boolean('open_status');
+            $table->Boolean('open_status')->default(0);
 
             // Filled_status
-            $table->Boolean('filled_status');
+            $table->Boolean('filled_status')->default(0);
 
             // Filled_status
             $table->Timestamp('duration_time');

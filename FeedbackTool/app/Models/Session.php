@@ -12,7 +12,7 @@ class Session extends Model
     protected $fillable = [
         'caretaker_id',
         'client_id',
-        'survey_combination_id',
+        'survlist_id',
         'open_status',
         'filled_status',
         'duration_time',

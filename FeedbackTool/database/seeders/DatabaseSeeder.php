@@ -146,9 +146,7 @@ class DatabaseSeeder extends Seeder
         Session::create([
             'caretaker_id' => 5,
             'client_id' => 7,
-            'survey_combination_id' => 1,
-            'open_status' => 0,
-            'filled_status' => 0,
+            'survlist_id' => 1,
             'duration_time' => now(),
         ]);
     }
