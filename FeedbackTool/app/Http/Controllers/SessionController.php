@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Session;
+use App\Models\Survey;
+use App\Models\Survlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SessionController extends Controller
 {
@@ -12,9 +15,31 @@ class SessionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public static function index()
     {
-        //
+        $user = Auth::user();
+        if (Auth::user()->can('moderate')){
+            $user->sessions = Session::all();
+        } else {
+            $user->sessions = $user->session()->get();
+        }
+
+        foreach ($user->sessions as $session) {
+            $session->survlist = $session->survlist()->get();
+            $session->surveys = collect();
+
+            foreach ($session->survlist as $list) {
+                $survey_ids = $list->survey_ids()->get('survey_id');
+                foreach ($survey_ids as $id){
+                    $survey = Survey::firstWhere('id', $id->survey_id);
+                    $survey->questions = $survey->question()->get();
+                    $session->surveys->push($survey);
+                }
+            }
+        }
+
+//        dd($user);
+        return $user;
     }
 
     /**

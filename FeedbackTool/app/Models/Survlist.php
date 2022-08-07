@@ -13,4 +13,9 @@ class Survlist extends Model
         'list_name',
         'description',
     ];
+
+    public function survey_ids()
+    {
+        return $this->hasMany(SurveySurvlist::class, 'survlist_id');
+    }
 }

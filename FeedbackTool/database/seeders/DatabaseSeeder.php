@@ -143,10 +143,37 @@ class DatabaseSeeder extends Seeder
             'survlist_id' => 1,
         ]);
 
+        Survlist::create([
+            'list_name' => 'survey list 2',
+            'description' => 'Een uitleg',
+        ]);
+
+        SurveySurvlist::create([
+            'survey_id' => 3,
+            'survlist_id' => 2,
+        ]);
+
+        SurveySurvlist::create([
+            'survey_id' => 6,
+            'survlist_id' => 2,
+        ]);
+
+        SurveySurvlist::create([
+            'survey_id' => 10,
+            'survlist_id' => 2,
+        ]);
+
         Session::create([
             'caretaker_id' => 5,
             'client_id' => 7,
             'survlist_id' => 1,
+            'duration_time' => now(),
+        ]);
+
+        Session::create([
+            'caretaker_id' => 6,
+            'client_id' => 8,
+            'survlist_id' => 2,
             'duration_time' => now(),
         ]);
     }
