@@ -1,12 +1,28 @@
 <x-app-layout>
     <x-slot name="header">
         <h2>
-            {{ __('Test page') }}
+            {{ __('Sessions') }}
         </h2>
     </x-slot>
 
-    @foreach ($user->sessions as $session)
+    @foreach ($user->surveys as $survey)
+{{--        </br>--}}
+        <h3>
+            Name = {{ $survey->survey_name }}
+        </h3>
+        </br>
+{{--        <ol>--}}
+{{--            @foreach($survey->questions as $question)--}}
+{{--                <li>--}}
+{{--                    {{ $question->question }}--}}
+{{--                </li>--}}
+{{--            @endforeach--}}
+{{--        </ol>--}}
+{{--        </br>--}}
+    @endforeach
 
+    @foreach ($user->sessions as $session)
+        </br></br></br>
         <h2>
             session_id = {{ $session->id }}
         </h2>
@@ -32,5 +48,12 @@
         </ul>
 
     @endforeach
+
+{{--    <form action="{{ route('addSurvey') }}" method="POST" enctype="multipart/form-data">--}}
+{{--        @csrf--}}
+
+{{--        <input type="text" name="survey_name" placeholder="someText" />--}}
+{{--        <button type="submit">submit</button>--}}
+{{--    </form>--}}
 
 </x-app-layout>

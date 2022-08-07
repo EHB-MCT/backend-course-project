@@ -19,9 +19,15 @@ class SessionController extends Controller
     {
         $user = Auth::user();
         if (Auth::user()->can('moderate')){
+            $user->surveys = Survey::all();
             $user->sessions = Session::all();
         } else {
+            $user->surveys = $user->survey()->get();
             $user->sessions = $user->session()->get();
+        }
+
+        foreach ($user->surveys as $survey){
+            $survey->questions = $survey->question()->get();
         }
 
         foreach ($user->sessions as $session) {

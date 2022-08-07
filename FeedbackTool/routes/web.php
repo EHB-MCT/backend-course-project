@@ -56,12 +56,12 @@ Route::group(['middleware' => ['permission:caretaker']], function () {
 
     // Show sessions
     Route::get('/sessions', function () {
-        return view('dashboard');
+        return view('sessions')->with('user', SessionController::index());
     })->middleware(['auth'])->name('sessions');
 
     // Show sessions
     Route::get('/session', function () {
-        return view('dashboard');
+        return view('session');
     })->middleware(['auth'])->name('session');
 
     /*
