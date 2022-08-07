@@ -99,6 +99,10 @@ To keep the JavaScript up-to-date run:
         <a href="https://laravel.com/docs/9.x/eloquent">/eloquent</a></br>
         Seeding with models and factories
     </li>
+    <li>
+        <a href="https://laravel.com/docs/9.x/eloquent-relationships">eloquent relations</a></br>
+        Eloquent model relations
+    </li>
 </ul>
 
 ## Css and Js

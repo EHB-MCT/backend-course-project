@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -78,5 +79,10 @@ Route::group(['middleware' => ['permission:caretaker']], function () {
     )->middleware(['auth'])->name('addQuestion');
 
 });
+
+// test get route for testing my controller data
+Route::get('/test', function () {
+    return view('testpage')->with('user', SessionController::index());
+})->middleware(['auth'])->name('test');
 
 require __DIR__.'/auth.php';

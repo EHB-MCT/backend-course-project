@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Question;
 use App\Models\Session;
+use App\Models\SurveySurvlist;
 use App\Models\Survey;
+use App\Models\Survlist;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -126,12 +128,52 @@ class DatabaseSeeder extends Seeder
         Survey::factory(random_int(User::all()->count()*4,User::all()->count()*6))->create();
         Question::factory(random_int(Survey::all()->count()*2,Survey::all()->count()*3))->create();
 
+        Survlist::create([
+            'list_name' => 'survey list 1',
+            'description' => 'Een uitleg',
+        ]);
+
+        SurveySurvlist::create([
+            'survey_id' => 5,
+            'survlist_id' => 1,
+        ]);
+
+        SurveySurvlist::create([
+            'survey_id' => 8,
+            'survlist_id' => 1,
+        ]);
+
+        Survlist::create([
+            'list_name' => 'survey list 2',
+            'description' => 'Een uitleg',
+        ]);
+
+        SurveySurvlist::create([
+            'survey_id' => 3,
+            'survlist_id' => 2,
+        ]);
+
+        SurveySurvlist::create([
+            'survey_id' => 6,
+            'survlist_id' => 2,
+        ]);
+
+        SurveySurvlist::create([
+            'survey_id' => 10,
+            'survlist_id' => 2,
+        ]);
+
         Session::create([
             'caretaker_id' => 5,
             'client_id' => 7,
-            'survey_combination_id' => 1,
-            'open_status' => 0,
-            'filled_status' => 0,
+            'survlist_id' => 1,
+            'duration_time' => now(),
+        ]);
+
+        Session::create([
+            'caretaker_id' => 6,
+            'client_id' => 8,
+            'survlist_id' => 2,
             'duration_time' => now(),
         ]);
     }
