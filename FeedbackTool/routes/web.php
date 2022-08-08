@@ -3,6 +3,7 @@
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\SurvlistController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -78,6 +79,9 @@ Route::group(['middleware' => ['permission:caretaker']], function () {
     Route::post('addQuestion', [QuestionController::class, "store"]
     )->middleware(['auth'])->name('addQuestion');
 
+    // Create a new survey list
+    Route::post('addSurvlist', [SurvlistController::class, "store"]
+    )->middleware(['auth'])->name('addSurvlist');
 });
 
 // test get route for testing my controller data

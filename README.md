@@ -61,7 +61,7 @@ It's required to have <a href="https://nodejs.org/en/">node</a> and <a href="htt
     If you want to refresh and seed at once
 </li>
 
-    php artisan migrate:refresh --seed
+    php artisan migrate:fresh --seed
 
 </ol>
 

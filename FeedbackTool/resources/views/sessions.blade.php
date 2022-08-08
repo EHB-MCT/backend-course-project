@@ -5,12 +5,23 @@
         </h2>
     </x-slot>
 
-    @foreach ($user->surveys as $survey)
+    <form action="{{ route('addSurvlist') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+
+        <input type="text" name="list_name" placeholder="survey list name" />
+        <input type="text" name="description" placeholder="description" />
+        @foreach ($user->surveys as $survey)
+            <input type="checkbox" name="survey{{ $survey->id }}">{{ $survey->survey_name }}</input>
+        @endforeach
+        <button type="submit">submit</button>
+    </form>
+
+{{--    @foreach ($user->surveys as $survey)--}}
 {{--        </br>--}}
-        <h3>
-            Name = {{ $survey->survey_name }}
-        </h3>
-        </br>
+{{--        <h3>--}}
+{{--            Name = {{ $survey->survey_name }}--}}
+{{--        </h3>--}}
+{{--        </br>--}}
 {{--        <ol>--}}
 {{--            @foreach($survey->questions as $question)--}}
 {{--                <li>--}}
@@ -19,7 +30,7 @@
 {{--            @endforeach--}}
 {{--        </ol>--}}
 {{--        </br>--}}
-    @endforeach
+{{--    @endforeach--}}
 
     @foreach ($user->sessions as $session)
         </br></br></br>
