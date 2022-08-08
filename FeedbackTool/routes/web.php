@@ -82,6 +82,10 @@ Route::group(['middleware' => ['permission:caretaker']], function () {
     // Create a new survey list
     Route::post('addSurvlist', [SurvlistController::class, "store"]
     )->middleware(['auth'])->name('addSurvlist');
+
+    // Create a new session
+    Route::post('addSession', [SessionController::class, "store"]
+    )->middleware(['auth'])->name('addSession');
 });
 
 // test get route for testing my controller data

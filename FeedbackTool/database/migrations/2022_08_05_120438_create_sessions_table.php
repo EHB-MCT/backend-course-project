@@ -36,7 +36,7 @@ return new class extends Migration
             $table->Boolean('filled_status')->default(0);
 
             // Filled_status
-            $table->Timestamp('duration_time');
+            $table->Timestamp('duration_time')->nullable();
 
             // Store the creation- and update-time of a row
             $table->timestamps();

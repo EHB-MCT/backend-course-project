@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Session;
 use App\Models\Survey;
 use App\Models\Survlist;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,6 +27,7 @@ class SessionController extends Controller
             $user->surveys = $user->survey()->get();
             $user->survlists = $user->survlists()->get();
             $user->sessions = $user->session()->get();
+            $user->clients = User::where("caretaker_id", Auth::user()->getAuthIdentifier())->get();
         }
 
         foreach ($user->surveys as $survey){
@@ -75,7 +77,20 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate request
+        $request->validate([
+            'client' => ['required', 'integer'],
+            'survlist' => ['required', 'integer'],
+        ]);
+
+        // Create a new survey
+        Session::create([
+            'caretaker_id' => Auth::user()->getAuthIdentifier(),
+            'client_id' => $request->client,
+            'survlist_id' => $request->survlist,
+        ]);
+
+        return redirect()->route('sessions');
     }
 
     /**
