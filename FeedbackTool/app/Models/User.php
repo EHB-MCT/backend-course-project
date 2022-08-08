@@ -49,6 +49,10 @@ class User extends Authenticatable
         return $this->hasMany(Survey::class);
     }
 
+    public function survlists() {
+        return $this->hasMany(Survlist::class, 'user_id', 'id');
+    }
+
     public function session() {
         if (!Auth::user()->can('moderate')){
             if (Auth::user()->can('caretaker') && !Auth::user()->can('moderate')){

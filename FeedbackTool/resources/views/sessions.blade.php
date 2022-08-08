@@ -5,6 +5,29 @@
         </h2>
     </x-slot>
 
+    </br>
+    <h2>
+        {{ __('Survey lists') }}
+    </h2>
+
+    @foreach ($user->survlists as $survlist)
+        </br>
+        <h2>
+            survey list listname = {{ $survlist->list_name }}
+        </h2>
+        <ul>
+            @foreach($survlist->surveys as $survey)
+                <li>
+                    {{ $survey->survey_name }}
+                </li>
+            @endforeach
+        </ul>
+    @endforeach
+
+    </br>
+    <h2>
+        {{ __('New survey lists') }}
+    </h2>
     <form action="{{ route('addSurvlist') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
@@ -16,33 +39,21 @@
         <button type="submit">submit</button>
     </form>
 
-{{--    @foreach ($user->surveys as $survey)--}}
-{{--        </br>--}}
-{{--        <h3>--}}
-{{--            Name = {{ $survey->survey_name }}--}}
-{{--        </h3>--}}
-{{--        </br>--}}
-{{--        <ol>--}}
-{{--            @foreach($survey->questions as $question)--}}
-{{--                <li>--}}
-{{--                    {{ $question->question }}--}}
-{{--                </li>--}}
-{{--            @endforeach--}}
-{{--        </ol>--}}
-{{--        </br>--}}
-{{--    @endforeach--}}
-
+    </br></br></br>
+    <h2>
+        Active sessions
+    </h2>
     @foreach ($user->sessions as $session)
-        </br></br></br>
+        </br></br>
         <h2>
-            session_id = {{ $session->id }}
+            client_id = {{ $session->client_id }}
         </h2>
         </br>
         <ul>
             <h3>
-                survey list name = {{ $session->survlist[0]->list_name }}
+                survey list for this client = {{ $session->survlist[0]->list_name }}
             </h3>
-            </br></br></br>
+            </br>
             @foreach($session->surveys as $survey)
                 <li>
                     survey name = {{ $survey->survey_name }}
@@ -54,17 +65,10 @@
                         @endforeach
                     </ol>
                 </li>
-                </br></br></br>
+                </br>
             @endforeach
         </ul>
 
     @endforeach
-
-{{--    <form action="{{ route('addSurvey') }}" method="POST" enctype="multipart/form-data">--}}
-{{--        @csrf--}}
-
-{{--        <input type="text" name="survey_name" placeholder="someText" />--}}
-{{--        <button type="submit">submit</button>--}}
-{{--    </form>--}}
 
 </x-app-layout>

@@ -20,9 +20,11 @@ class SessionController extends Controller
         $user = Auth::user();
         if (Auth::user()->can('moderate')){
             $user->surveys = Survey::all();
+            $user->survlists = Survlist::all();
             $user->sessions = Session::all();
         } else {
             $user->surveys = $user->survey()->get();
+            $user->survlists = $user->survlists()->get();
             $user->sessions = $user->session()->get();
         }
 
@@ -30,13 +32,20 @@ class SessionController extends Controller
             $survey->questions = $survey->question()->get();
         }
 
+        foreach ($user->survlists as $survlist) {
+            $survlist->surveys = collect();
+            foreach ($survlist->survey_ids()->get('survey_id') as $id) {
+                $survey = Survey::firstWhere('id', $id->survey_id);
+                $survlist->surveys->push($survey);
+            }
+        }
+
         foreach ($user->sessions as $session) {
             $session->survlist = $session->survlist()->get();
             $session->surveys = collect();
 
             foreach ($session->survlist as $list) {
-                $survey_ids = $list->survey_ids()->get('survey_id');
-                foreach ($survey_ids as $id){
+                foreach ($list->survey_ids()->get('survey_id') as $id){
                     $survey = Survey::firstWhere('id', $id->survey_id);
                     $survey->questions = $survey->question()->get();
                     $session->surveys->push($survey);

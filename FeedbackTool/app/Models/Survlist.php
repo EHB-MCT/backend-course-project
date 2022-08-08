@@ -10,12 +10,13 @@ class Survlist extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'list_name',
         'description',
     ];
 
     public function survey_ids()
     {
-        return $this->hasMany(SurveySurvlist::class, 'survlist_id');
+        return $this->hasMany(SurveySurvlist::class, 'survlist_id', 'id');
     }
 }

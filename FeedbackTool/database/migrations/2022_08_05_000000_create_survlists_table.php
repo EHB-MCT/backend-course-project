@@ -17,6 +17,10 @@ return new class extends Migration
             // Auto-incrementing id field of type bigInteger
             $table->id();
 
+            // User_id and foreign relation
+            $table->BigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+
             // Survey_combination_id
             $table->String('list_name');
 

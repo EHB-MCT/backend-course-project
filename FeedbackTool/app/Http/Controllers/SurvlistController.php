@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Survey;
 use App\Models\SurveySurvlist;
 use App\Models\Survlist;
 use Illuminate\Http\Request;
@@ -45,6 +46,7 @@ class SurvlistController extends Controller
 
         // Create a new survey
         $survlist = Survlist::create([
+            'user_id' => Auth::user()->getAuthIdentifier(),
             'list_name' => $request->list_name,
             'description' => $request->description,
         ]);

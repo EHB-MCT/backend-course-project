@@ -129,6 +129,7 @@ class DatabaseSeeder extends Seeder
         Question::factory(random_int(Survey::all()->count()*2,Survey::all()->count()*3))->create();
 
         Survlist::create([
+            'user_id' => 5,
             'list_name' => 'survey list 1',
             'description' => 'Een uitleg',
         ]);
@@ -144,6 +145,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Survlist::create([
+            'user_id' => 6,
             'list_name' => 'survey list 2',
             'description' => 'Een uitleg',
         ]);
