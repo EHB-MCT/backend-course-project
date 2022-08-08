@@ -61,7 +61,7 @@ It's required to have <a href="https://nodejs.org/en/">node</a> and <a href="htt
     If you want to refresh and seed at once
 </li>
 
-    php artisan migrate:refresh --seed
+    php artisan migrate:fresh --seed
 
 </ol>
 
@@ -98,6 +98,10 @@ To keep the JavaScript up-to-date run:
     <li>
         <a href="https://laravel.com/docs/9.x/eloquent">/eloquent</a></br>
         Seeding with models and factories
+    </li>
+    <li>
+        <a href="https://laravel.com/docs/9.x/eloquent-relationships">eloquent relations</a></br>
+        Eloquent model relations
     </li>
 </ul>
 

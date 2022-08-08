@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\SurvlistController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,12 +57,12 @@ Route::group(['middleware' => ['permission:caretaker']], function () {
 
     // Show sessions
     Route::get('/sessions', function () {
-        return view('dashboard');
+        return view('sessions')->with('user', SessionController::index());
     })->middleware(['auth'])->name('sessions');
 
     // Show sessions
     Route::get('/session', function () {
-        return view('dashboard');
+        return view('session');
     })->middleware(['auth'])->name('session');
 
     /*
@@ -77,6 +79,18 @@ Route::group(['middleware' => ['permission:caretaker']], function () {
     Route::post('addQuestion', [QuestionController::class, "store"]
     )->middleware(['auth'])->name('addQuestion');
 
+    // Create a new survey list
+    Route::post('addSurvlist', [SurvlistController::class, "store"]
+    )->middleware(['auth'])->name('addSurvlist');
+
+    // Create a new session
+    Route::post('addSession', [SessionController::class, "store"]
+    )->middleware(['auth'])->name('addSession');
 });
+
+// test get route for testing my controller data
+Route::get('/test', function () {
+    return view('testpage')->with('user', SessionController::index());
+})->middleware(['auth'])->name('test');
 
 require __DIR__.'/auth.php';

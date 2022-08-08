@@ -5,16 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Question extends Model
+class SurveySurvlist extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'survey_id',
-        'question',
+        'survlist_id',
     ];
-
-    public function survey() {
-        return $this->belongsTo(Survey::class);
-    }
 }

@@ -3,7 +3,7 @@
         <a class="navlink " href="{{ route('welcome') }}">
             <x-application-logo />
         </a>
-        @if(Auth::user()->hasRole('caretaker'))
+        @if(Auth::user()->can('caretaker'))
             <x-nav-link :href="route('clients')" :active="request()->routeIs('clients', 'client')">
                 @if(Auth::user()->can('admin'))
                     {{ __('All Users') }}

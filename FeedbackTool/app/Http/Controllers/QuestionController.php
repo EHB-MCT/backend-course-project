@@ -26,7 +26,7 @@ class QuestionController extends Controller
         $survey = Survey::firstWhere('id', $id);
 
         // Get the questions corresponding to this survey
-        $survey->questions = Question::where('survey_id', $survey->id)->get();
+        $survey->questions = $survey->question()->get();
 
         // return the survey
         return $survey ;
@@ -50,18 +50,14 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        // collect variables
-        $user_id = Auth::user()->getAuthIdentifier();
-        $surveys = Survey::where("user_id", $user_id)->get();
-
+        // Validate request
         $request->validate([
             'survey_id' => ['required', 'integer'],
             'question' => ['required', 'string', 'max:255'],
         ]);
 
-        // Check if the list the user tries to add a question to is his or hers
-        // and not edited in the hidden input field
-        foreach ($surveys as $survey){
+        // Check if the survey the user tries to add a question to is his or hers and not edited in the hidden input field
+        foreach (Auth::user()->survey()->get() as $survey){
             if($survey->id == $request->survey_id){
                 Question::create([
                     'survey_id' => $request->survey_id,
