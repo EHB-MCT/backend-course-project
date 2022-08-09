@@ -19,7 +19,7 @@ class SessionController extends Controller
     public static function index()
     {
         $user = Auth::user();
-        if (Auth::user()->can('moderate')){
+        if ($user->can('moderate')){
             $user->surveys = Survey::all();
             $user->survlists = Survlist::all();
             $user->sessions = Session::all();
@@ -43,6 +43,7 @@ class SessionController extends Controller
         }
 
         foreach ($user->sessions as $session) {
+            $session->client = User::where('id', $session->client_id)->get();
             $session->survlist = $session->survlist()->get();
             $session->surveys = collect();
 

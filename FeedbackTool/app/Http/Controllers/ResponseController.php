@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Response;
+use App\Models\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResponseController extends Controller
 {
@@ -12,9 +14,21 @@ class ResponseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public static function index()
     {
-        //
+        $user = Auth::user();
+        if ($user->can('moderate')){
+            $user->sessions = Session::all();
+        } else {
+            $user->sessions = $user->session()->get();
+        }
+
+        foreach ($user->sessions as $session) {
+            $session->survlist = $session->survlist()->get();
+        }
+
+//        dd($user->sessions);
+        return $user->sessions;
     }
 
     /**

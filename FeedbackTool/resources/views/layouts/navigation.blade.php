@@ -33,7 +33,7 @@
                 </x-nav-link>
             @endif
         @else
-            <x-nav-link :href="route('welcome')" :active="request()->routeIs('reply')">
+            <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome', 'session')">
                 {{ __('Fill in survey') }}
             </x-nav-link>
         @endif

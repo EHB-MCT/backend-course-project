@@ -1,6 +1,10 @@
-<form action="{{ route('addSurvey') }}" method="POST" enctype="multipart/form-data">
-    @csrf
+<x-app-layout>
+    <x-slot name="header">
+        <h2>
+            {{ __('Session') }}
+        </h2>
+    </x-slot>
 
-    <input type="text" name="survey_name" placeholder="someText" />
-    <button type="submit">submit</button>
-</form>
+    Your session
+
+</x-app-layout>

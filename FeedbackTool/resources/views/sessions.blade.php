@@ -45,6 +45,17 @@
     </h2>
     @foreach ($user->sessions as $session)
         </br></br>
+        <a href="{{ route('session', ['id' => $session->id]) }}">
+            <div>
+                {{ $session->client[0]->name }}
+            </div>
+            <div>
+                {{ $session->survlist[0]->list_name }}
+            </div>
+            <div>
+                <i class="fas fa-plus"></i>
+            </div>
+        </a>
         <h2>
             client_id = {{ $session->client_id }}
         </h2>
