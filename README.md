@@ -163,4 +163,12 @@ To keep the JavaScript up-to-date run:
         <a href="https://newbedev.com/how-to-manually-create-a-new-empty-eloquent-collection-in-laravel-4">Newbedev</a></br>
         Make clean collection instead of array
     </li>
+    <li>
+        <a href="https://www.tutsmake.com/laravel-8-charts-js-tutorial-example/">tutsmake</a></br>
+        Setting up charts in laravel
+    </li>
+    <li>
+        <a href="https://www.chartjs.org/docs/latest/">chartjs</a></br>
+        Setting up charts
+    </li>
 </ul>

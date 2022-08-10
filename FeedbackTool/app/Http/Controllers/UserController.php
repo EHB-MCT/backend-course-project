@@ -51,10 +51,17 @@ class UserController extends Controller
         // Get the client with this id
         $client = User::firstWhere('id', $id);
 
-        // TODO
-        // With $client->... add needed data for showing stats
+        $client->tableOne = collect();
+        $client->tableTwo = collect();
 
-        // return the client
+        $ten = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+        // Fill table one
+        foreach ($ten as $number){
+            $client->tableOne->push($number);
+            $client->tableTwo->push($number);
+        }
+
         return $client;
     }
 
