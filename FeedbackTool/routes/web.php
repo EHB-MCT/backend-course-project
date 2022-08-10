@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ResponseController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SurvlistController;
@@ -18,8 +19,19 @@ Route::get('/', function () {
 });
 
 Route::get('/welcome', function () {
-    return view('dashboard');
+    return view('dashboard')->with('sessions', responseController::index());
 })->middleware(['auth'])->name('welcome');
+
+Route::group(['middleware' => ['permission:client']], function () {
+    // Show session
+    Route::get('/session', function () {
+        return view('session')->with('question', responseController::sessionOnId($_GET['id']));
+    })->middleware(['auth'])->name('session');
+
+    // Create a new response
+    Route::post('addResponse', [ResponseController::class, "store"]
+    )->middleware(['auth'])->name('addResponse');
+});
 
 Route::group(['middleware' => ['permission:caretaker']], function () {
 
@@ -59,11 +71,6 @@ Route::group(['middleware' => ['permission:caretaker']], function () {
     Route::get('/sessions', function () {
         return view('sessions')->with('user', SessionController::index());
     })->middleware(['auth'])->name('sessions');
-
-    // Show sessions
-    Route::get('/session', function () {
-        return view('session');
-    })->middleware(['auth'])->name('session');
 
     /*
     |--------------------------------------------------------------------------
