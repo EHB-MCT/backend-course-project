@@ -23,10 +23,14 @@ Route::get('/welcome', function () {
 })->middleware(['auth'])->name('welcome');
 
 Route::group(['middleware' => ['permission:client']], function () {
-    // Show sessions
+    // Show session
     Route::get('/session', function () {
-        return view('session');
+        return view('session')->with('question', responseController::sessionOnId($_GET['id']));
     })->middleware(['auth'])->name('session');
+
+    // Create a new response
+    Route::post('addResponse', [ResponseController::class, "store"]
+    )->middleware(['auth'])->name('addResponse');
 });
 
 Route::group(['middleware' => ['permission:caretaker']], function () {

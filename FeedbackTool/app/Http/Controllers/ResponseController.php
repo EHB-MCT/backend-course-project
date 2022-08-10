@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use App\Models\Response;
 use App\Models\Session;
+use App\Models\Survey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,17 +20,60 @@ class ResponseController extends Controller
     {
         $user = Auth::user();
         if ($user->can('moderate')){
-            $user->sessions = Session::all();
+            $user->sessions = Session::where('open_status', 0);
         } else {
-            $user->sessions = $user->session()->get();
+            $user->sessions = $user->session()->where('open_status', 0)->get();
         }
 
         foreach ($user->sessions as $session) {
             $session->survlist = $session->survlist()->get();
         }
 
-//        dd($user->sessions);
         return $user->sessions;
+    }
+
+    public static function sessionOnId($id)
+    {
+        $user = Auth::user();
+        // Get active sessions if posible
+        if ($user->session()->where('open_status', 0)->exists()) {
+            $user->sessions = $user->session()->where('open_status', 0)->get();
+            $session = Session::firstWhere('id', $id)->get();
+
+            // Check if session is the chosen one
+            foreach ($user->sessions as $ses){
+                if ($ses == $session[0]){
+                    $session = $ses;
+                    $user->survlist = $ses->survlist()->get();
+                    $user->surveys = collect();
+                    $user->questions = collect();
+
+                    // Get the surveys
+                    foreach ($user->survlist[0]->survey_ids()->get('survey_id') as $id){
+                        $user->surveys->push(Survey::firstWhere('id', $id->survey_id));
+                    }
+
+                    // Get the survey questions
+                    foreach ($user->surveys as $survey){
+                        $surveyQuestions = $survey->question()->get();
+                        foreach ($surveyQuestions as $question){
+                            $user->questions->push($question);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Get first question which isn't filled in
+        if($user->questions) {
+            foreach ($user->questions as $questionsItem) {
+                if (!Response::where('question_id', $questionsItem->id)->where('session_id', $session->id)->exists()) {
+                    return $questionsItem;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -45,11 +90,69 @@ class ResponseController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        //
+        // Validate request
+        $request->validate([
+            'question_id' => ['required', 'integer'],
+            'session_id' => ['required', 'integer'],
+            'score' => ['required', 'integer'],
+        ]);
+
+        $user = Auth::user();
+        // Get active sessions if posible
+        if ($user->session()->where('open_status', 0)->exists()) {
+            $user->sessions = $user->session()->where('open_status', 0)->get();
+            $session = Session::firstWhere('id', $request->session_id)->get();
+
+            // Check if session is the chosen one
+            foreach ($user->sessions as $ses){
+                if ($ses == $session[0]){
+                    $session = $ses;
+                    $user->survlist = $ses->survlist()->get();
+                    $user->surveys = collect();
+                    $user->questions = collect();
+
+                    // Get the surveys
+                    foreach ($user->survlist[0]->survey_ids()->get('survey_id') as $id){
+                        $user->surveys->push(Survey::firstWhere('id', $id->survey_id));
+                    }
+
+                    // Get the survey questions
+                    foreach ($user->surveys as $survey){
+                        $surveyQuestions = $survey->question()->get();
+                        foreach ($surveyQuestions as $question){
+                            $user->questions->push($question);
+                        }
+                    }
+                }
+            }
+        }
+
+        $givenQuestion = Question::where('id', $request->question_id)->get();
+
+        foreach ($user->questions as $question){
+            if ($question == $givenQuestion[0] &&
+                !Response::where('question_id', $question->id)->where('session_id', $session->id)->exists()) {
+
+                // Create a new response
+                Response::create([
+                    'question_id' => $request->question_id,
+                    'session_id' => $request->session_id,
+                    'score' => $request->score,
+                ]);
+
+                if ($question === $user->questions->last()){
+                    $session->update([
+                        'open_status' => 1,
+                    ]);
+                    return redirect()->route('welcome');
+                }
+            }
+        }
+        return redirect()->route('session', ['id' => $request->session_id]);
     }
 
     /**
@@ -97,3 +200,140 @@ class ResponseController extends Controller
         //
     }
 }
+
+//// Validate request
+//$request->validate([
+//    'question_id' => ['required', 'integer'],
+//    'session_id' => ['required', 'integer'],
+//    'score' => ['required', 'integer'],
+//]);
+//
+//// Do all the stuff from getting the question to know if the list is this clients list and question.
+//// Get the sessions of this user
+//$sessions = Auth::user()->session()
+//    ->where('open_status', 0)
+//    ->get();
+//$surveys = collect();
+//$questions = collect();
+//
+//// Check all sessions for the active one
+//foreach ($sessions as $session){
+//
+//    // If session is this users
+//    if ($session->id = $request->session_id){
+//        $survlist = $session->survlist()->get();
+//
+//        // Get the surveys belonging to the survey list
+//        foreach ($survlist[0]->survey_ids()->get('survey_id') as $id){
+//            $surveys->push(Survey::firstWhere('id', $id->survey_id));
+//        }
+//    }
+//}
+//
+//// Fill the questions collection
+//foreach ($surveys as $survey){
+//    $surveyQuestions = $survey->question()->get();
+//    foreach ($surveyQuestions as $question){
+//        $questions->push($question);
+//    }
+//}
+//
+//// Check what questions are filled in
+//foreach ($questions as $question){
+//
+//    if (!Response::where('question_id', $question->id)
+//        ->where('session_id', $session->id)
+//        ->exists()){
+//
+//        // Create a new response
+//        Response::create([
+//            'question_id' => $request->question_id,
+//            'session_id' => $request->session_id,
+//            'score' => $request->score,
+//        ]);
+//    }
+//    if ($question === $questions[$questions->count()-1] &&
+//        Response::where('question_id', $question->id)
+//            ->where('session_id', $session->id)
+//            ->exists()){
+//        $session->update([
+//            'open_status' => 1,
+//        ]);
+//    }
+//    return redirect()->route('session', ['id' => $request->session_id]);
+//}
+//
+//return redirect()->route('session', ['id' => $request->session_id]);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+//
+//// Get the active sessions of this user
+//$sessions = Auth::user()->session()
+//    ->where('open_status', 0)
+//    ->get();
+//$surveys = collect();
+//$questions = collect();
+//// Check all sessions for the active one
+//foreach ($sessions as $session){
+//
+//    // If session is this users
+//    if ($session->id = $id){
+//        $survlist = $session->survlist()->get();
+//
+//        // Get the surveys belonging to the survey list
+//        foreach ($survlist[0]->survey_ids()->get('survey_id') as $id){
+//            $surveys->push(Survey::firstWhere('id', $id->survey_id));
+//        }
+//    }
+//}
+//
+//// Fill the questions collection
+//foreach ($surveys as $survey){
+//    $surveyQuestions = $survey->question()->get();
+//    foreach ($surveyQuestions as $question){
+//        $questions->push($question);
+//    }
+//}
+//
+//
+//// Check what questions are filled in
+//foreach ($questions as $question){
+////            $newResponse = new Response();
+////            $newResponse->question_id = $question->id;
+////            $newResponse->session_id = $session->id;
+//
+////            if (Response::where('question_id', $question->id)
+////                ->where('session_id', $session->id)
+////                ->exists() &&
+////            $question == $questions[$questions->count()-1]){
+////
+////                $session->update([
+////                    'open_status' => 1,
+////                ]);
+////
+////            }
+////            if (!$newResponse->exists()){
+////                return $question;
+////            }
+//
+////            dd();
+//
+//    if (!Response::where('question_id', $question->id)
+//        ->where('session_id', $session->id)
+//        ->exists()){
+//        return $question;
+//    } elseif (
+//        Response::where('question_id', $question->id)
+//            ->where('session_id', $session->id)
+//            ->exists() &&
+//        $question === $questions[$questions->count()-1]
+//    ){
+//        $session->update([
+//            'open_status' => 1,
+//        ]);
+////                return redirect()->route('welcome');
+//    }
+//}
+//
+////        return redirect()->route('welcome');

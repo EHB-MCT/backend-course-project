@@ -9,7 +9,7 @@
         You're logged in!
     </div>
 
-    @if(!$sessions)
+    @if(!$sessions || $sessions->count() == 0 )
         <div>
             Nothing to fill in!
         </div>
