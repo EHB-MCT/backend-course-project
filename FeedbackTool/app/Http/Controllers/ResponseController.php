@@ -147,6 +147,7 @@ class ResponseController extends Controller
                 if ($question === $user->questions->last()){
                     $session->update([
                         'open_status' => 1,
+                        'filled_status' => 1,
                     ]);
                     return redirect()->route('welcome');
                 }
