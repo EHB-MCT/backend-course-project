@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Session;
+use App\Models\Survlist;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -51,16 +54,21 @@ class UserController extends Controller
         // Get the client with this id
         $client = User::firstWhere('id', $id);
 
-        $client->tableOne = collect();
-        $client->tableTwo = collect();
+        // Get all filled sessions
+//        $client->sessions = Session::select('*')->where('client_id', $client->id)->where('filled_status', 1)->groupBy('survlist_id')->get();
+        $client->sessions = Session::where('client_id', $client->id)->where('filled_status', 1)->get();
 
-        $ten = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-        // Fill table one
-        foreach ($ten as $number){
-            $client->tableOne->push($number);
-            $client->tableTwo->push($number);
+        // Put the session survlists in the survlist collection
+        $client->survlists = collect();
+        foreach ($client->sessions as $session){
+            $client->survlists->push(Survlist::where('id', $session->survlist_id)->get());
         }
+
+        // Limit all survlist to one of each
+        $client->survlists = $client->survlists->groupBy('id');
+
+
+        dd($client);
 
         return $client;
     }
@@ -138,3 +146,14 @@ function fillCaretaker($caretakers){
     }
     return $caretakers;
 }
+
+//$client->tableOne = collect();
+//$client->tableTwo = collect();
+//
+//$ten = [0, 1, 2.5, 3, 4.75, 5, 6, 7.1, 8, 9];
+//
+//// Fill table one
+//foreach ($ten as $number){
+//    $client->tableOne->push($number);
+//    $client->tableTwo->push($number);
+//}
