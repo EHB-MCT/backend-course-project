@@ -132,6 +132,14 @@ To keep the JavaScript up-to-date run:
         <a href="https://stackoverflow.com/questions/51116029">/how-to-check-current-url-inside-if-statement-in-laravel-5-6</a></br>
         Change header title based on what page you are
     </li>
+    <li>
+        <a href="https://stackoverflow.com/questions/32667319">/getting-records-with-multiple-ids-in-eloquent</a></br>
+        Get records with multiple ids
+    </li>
+    <li>
+        <a href="https://stackoverflow.com/questions/35147366">/check-if-a-value-exists-in-array-laravel-or-php</a></br>
+        check if a value exists in array
+    </li>
 </ul>
 
 # <a>Other</a>
@@ -170,5 +178,9 @@ To keep the JavaScript up-to-date run:
     <li>
         <a href="https://www.chartjs.org/docs/latest/">chartjs</a></br>
         Setting up charts
+    </li>
+    <li>
+        <a href="https://iqcode.com/code/php/how-to-add-values-to-an-array-in-laravel">Iqcode</a></br>
+        Add values to array
     </li>
 </ul>

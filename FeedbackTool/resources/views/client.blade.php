@@ -38,11 +38,11 @@
         const chartOne = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: {{ $user->tableOne }},
+                labels: {{ $user->tableOne->labels }},
                 datasets: [
                     {
                     label: '# of Votes',
-                    data: {{ $user->tableOne }},
+                    data: {{ $user->tableOne->data }},
                     backgroundColor:
                         'rgba(255, 99, 132, 0.2)'
                         // 'rgba(54, 162, 235, 0.2)',
