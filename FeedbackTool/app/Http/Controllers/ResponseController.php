@@ -36,38 +36,40 @@ class ResponseController extends Controller
     {
         $user = Auth::user();
         // Get active sessions if posible
-        if ($user->session()->where('open_status', 0)->exists()) {
-            $user->sessions = $user->session()->where('open_status', 0)->get();
-            $session = Session::firstWhere('id', $id)->get();
+//        if ($user->session()->where('open_status', 0)->where('filled_status', 0)->exists()) {
+        $user->sessions = $user->session()->where('open_status', 0)->where('filled_status', 0)->get();
+//        $session = ;
 
-            // Check if session is the chosen one
-            foreach ($user->sessions as $ses){
-                if ($ses == $session[0]){
-                    $session = $ses;
-                    $user->survlist = $ses->survlist()->get();
-                    $user->surveys = collect();
-                    $user->questions = collect();
+        // Check if session is the chosen one
+        foreach ($user->sessions as $ses){
+            if ($ses == Session::firstWhere('id', $id)->get()){
+//                $session = $ses;
+                $user->survlist = $ses->survlist()->get();
+                $user->surveys = collect();
+                $user->questions = collect();
 
-                    // Get the surveys
-                    foreach ($user->survlist[0]->survey_ids()->get('survey_id') as $id){
-                        $user->surveys->push(Survey::firstWhere('id', $id->survey_id));
-                    }
+                // Get the surveys
+                foreach ($user->survlist[0]->survey_ids()->get('survey_id') as $id){
+                    dd();
+                    $user->surveys->push(Survey::firstWhere('id', $id->survey_id));
+                }
 
-                    // Get the survey questions
-                    foreach ($user->surveys as $survey){
-                        $surveyQuestions = $survey->question()->get();
-                        foreach ($surveyQuestions as $question){
-                            $user->questions->push($question);
-                        }
+                // Get the survey questions
+                foreach ($user->surveys as $survey){
+                    $surveyQuestions = $survey->question()->get();
+                    foreach ($surveyQuestions as $question){
+                        $user->questions->push($question);
                     }
                 }
             }
         }
+//        }
 
         // Get first question which isn't filled in
         if($user->questions) {
             foreach ($user->questions as $questionsItem) {
-                if (!Response::where('question_id', $questionsItem->id)->where('session_id', $session->id)->exists()) {
+                if (!Response::where('question_id', $questionsItem->id)->where('session_id', $id)->exists()) {
+                    dd($questionsItem);
                     return $questionsItem;
                 }
             }
