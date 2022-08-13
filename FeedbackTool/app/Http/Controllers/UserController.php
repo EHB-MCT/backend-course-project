@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Response;
 use App\Models\Session;
+use App\Models\Survey;
 use App\Models\Survlist;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -58,13 +60,39 @@ class UserController extends Controller
         $user->sessions = Session::where('client_id', $user->id)->where('filled_status', 1)->get();
 
         // Get all survey lists only once
-        $survlistArray = []; // Array with ids
+        $survlistArray = []; // Array with ids for get the survey list models later
         foreach ($user->sessions as $session){
             if (!in_array($session->survlist_id, $survlistArray)){
                 array_push($survlistArray, $session->survlist_id); // Add id if it doesn't exist yet
             }
         }
         $user->survlists = Survlist::whereIn('id', $survlistArray)->get(); // Get full survey lists depending on the ids
+
+        // Fill survey lists with surveys and questions
+        foreach ($user->survlists as $survlist){
+
+            // Get the surveys
+            $survlist->surveys = collect();
+            foreach ($survlist->survey_ids()->get('survey_id') as $id) {
+                $survlist->surveys->push(Survey::firstWhere('id', $id->survey_id));
+            }
+
+            // Get the survey questions
+            $survlist->questions = collect();
+            foreach ($survlist->surveys as $survey) {
+                $surveyQuestions = $survey->question()->get();
+                foreach ($surveyQuestions as $question) {
+                    $survlist->questions->push($question);
+                }
+            }
+
+            // Get the survey questions
+//            $survlist->data = collect();
+            for ($i = 0; $i < $survlist->questions->count(); $i++) {
+                $variable = 'question'.$i;
+                $survlist->$variable = Response::where('question_id', $survlist->questions[$i]->id)->get();
+            }
+        }
 
 //        dd($user);
 
