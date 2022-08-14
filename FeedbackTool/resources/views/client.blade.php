@@ -16,33 +16,23 @@
         </ul>
     </div>
 
-{{--    <div>--}}
-{{--        --}}{{--TODO--}}
-{{--        --}}{{--Insert client stats here--}}
-{{--        <div class="chart-container">--}}
-{{--            <div class="pie-chart-container">--}}
-{{--                <canvas id="pie-chart"></canvas>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-
     <!-- javascript chart -->
     <canvas id="myChart" width="400" height="200"></canvas>
     <script>
         // Get chart ids
         const ctx = document.getElementById('myChart').getContext('2d');
 
-        // Get data
-        {{--var chartOneData = {{ $user->tableOne }};--}}
+        var survey = {!! $user->survlists[0] !!}
+        console.log(survey);
 
         const chartOne = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: {{ $user->tableOne->labels }},
+                labels: survey.dates,
                 datasets: [
                     {
                     label: '# of Votes',
-                    data: {{ $user->tableOne->data }},
+                    data: survey.scores[0],
                     backgroundColor:
                         'rgba(255, 99, 132, 0.2)'
                         // 'rgba(54, 162, 235, 0.2)',
@@ -58,7 +48,7 @@
                 },
                 {
                     label: '# of Clicks',
-                    data: {{ $user->tableTwo }},
+                    data: survey.scores[1],
                     backgroundColor:
                         'rgba(54, 162, 235, 0.2)'
                     ,
