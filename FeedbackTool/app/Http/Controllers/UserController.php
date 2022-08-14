@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Response;
+use App\Models\Session;
+use App\Models\Survey;
+use App\Models\Survlist;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -49,13 +54,79 @@ class UserController extends Controller
     public static function indexOnUserId ($id)
     {
         // Get the client with this id
-        $client = User::firstWhere('id', $id);
+        if (User::firstWhere('id', $id)->where('caretaker_id', Auth::user()->getAuthIdentifier())->exists()){
 
-        // TODO
-        // With $client->... add needed data for showing stats
+            // Get client
+            $user = User::firstWhere('id', $id);
+            
+            // Get all filled sessions
+            $user->sessions = Session::where('client_id', $user->id)->where('filled_status', 1)->get();
 
-        // return the client
-        return $client;
+            // Get all survey lists only once
+            $survlistArray = []; // Array with ids for get the survey list models later
+            foreach ($user->sessions as $session){
+                if (!in_array($session->survlist_id, $survlistArray)){
+                    array_push($survlistArray, $session->survlist_id); // Add id if it doesn't exist yet
+                }
+            }
+            $user->survlists = Survlist::whereIn('id', $survlistArray)->get(); // Get full survey lists depending on the ids
+
+            // Fill survey lists with surveys and questions
+            foreach ($user->survlists as $survlist){
+                
+                // Get the surveys
+                $surveys = collect();
+                foreach ($survlist->survey_ids()->get('survey_id') as $id) {
+                    $surveys->push(Survey::firstWhere('id', $id->survey_id));
+                }
+
+                // Get the survey questions
+                $questions = collect();
+                foreach ($surveys as $survey) {
+                    $surveyQuestions = $survey->question()->get();
+                    foreach ($surveyQuestions as $question) {
+                        $questions->push($question);
+                    }
+                }
+
+                // Data storage
+                $dates = collect();
+                $questionNames = collect();
+                $scores = collect();
+
+                // only get fully filled in sessions
+                foreach (Session::where('client_id', $user->id)->where('survlist_id', $survlist->id)->where('filled_status', 1)->get() as $session) {
+                    $dates->push($session->created_at->toString());
+                }
+
+                // Loop over questions
+                foreach ($questions as $question) {
+
+                    // Fill question results
+                    $results = [];
+
+                    // only get fully filled in sessions
+                    foreach (Session::where('client_id', $user->id)->where('survlist_id', $survlist->id)->where('filled_status', 1)->get() as $session) {
+
+                        // Get question response from certain sessions
+                        if(Response::where('question_id', $question->id)->where('session_id', $session->id)->exists()) {
+                            $response = Response::where('question_id', $question->id)->where('session_id', $session->id)->get('score');
+                            array_push($results, $response[0]->score);
+                        }
+                    }
+
+                    $questionNames->push($question->question);
+                    $scores->push($results);
+
+                }
+
+                $survlist->dates = $dates;
+                $survlist->questions = $questionNames;
+                $survlist->scores = $scores;
+            }
+        }
+
+        return $user;
     }
 
     /**

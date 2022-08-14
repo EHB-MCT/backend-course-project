@@ -83,7 +83,7 @@
 
     </br>
     <h2>
-        {{ __('New survey lists') }}
+        {{ __('New session') }}
     </h2>
     </br>
     <form action="{{ route('addSession') }}" method="POST" enctype="multipart/form-data">
