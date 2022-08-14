@@ -54,61 +54,91 @@ class UserController extends Controller
     public static function indexOnUserId ($id)
     {
         // Get the client with this id
-        $user = User::firstWhere('id', $id);
+        if (User::firstWhere('id', $id)->where('caretaker_id', Auth::user()->getAuthIdentifier())->exists()){
 
-        // Get all filled sessions
-        $user->sessions = Session::where('client_id', $user->id)->where('filled_status', 1)->get();
+            // Get client
+            $user = User::firstWhere('id', $id);
+            
+            // Get all filled sessions
+            $user->sessions = Session::where('client_id', $user->id)->where('filled_status', 1)->get();
 
-        // Get all survey lists only once
-        $survlistArray = []; // Array with ids for get the survey list models later
-        foreach ($user->sessions as $session){
-            if (!in_array($session->survlist_id, $survlistArray)){
-                array_push($survlistArray, $session->survlist_id); // Add id if it doesn't exist yet
-            }
-        }
-        $user->survlists = Survlist::whereIn('id', $survlistArray)->get(); // Get full survey lists depending on the ids
-
-        // Fill survey lists with surveys and questions
-        foreach ($user->survlists as $survlist){
-
-            // Get the surveys
-            $survlist->surveys = collect();
-            foreach ($survlist->survey_ids()->get('survey_id') as $id) {
-                $survlist->surveys->push(Survey::firstWhere('id', $id->survey_id));
-            }
-
-            // Get the survey questions
-            $survlist->questions = collect();
-            foreach ($survlist->surveys as $survey) {
-                $surveyQuestions = $survey->question()->get();
-                foreach ($surveyQuestions as $question) {
-                    $survlist->questions->push($question);
+            // Get all survey lists only once
+            $survlistArray = []; // Array with ids for get the survey list models later
+            foreach ($user->sessions as $session){
+                if (!in_array($session->survlist_id, $survlistArray)){
+                    array_push($survlistArray, $session->survlist_id); // Add id if it doesn't exist yet
                 }
             }
+            $user->survlists = Survlist::whereIn('id', $survlistArray)->get(); // Get full survey lists depending on the ids
 
-            // Get the survey questions
-//            $survlist->data = collect();
-            for ($i = 0; $i < $survlist->questions->count(); $i++) {
-                $variable = 'question'.$i;
-                $survlist->$variable = Response::where('question_id', $survlist->questions[$i]->id)->get();
+            // Fill survey lists with surveys and questions
+            foreach ($user->survlists as $survlist){
+                
+                // Get the surveys
+                $surveys = collect();
+                foreach ($survlist->survey_ids()->get('survey_id') as $id) {
+                    $surveys->push(Survey::firstWhere('id', $id->survey_id));
+                }
+
+                // Get the survey questions
+                $questions = collect();
+                foreach ($surveys as $survey) {
+                    $surveyQuestions = $survey->question()->get();
+                    foreach ($surveyQuestions as $question) {
+                        $questions->push($question);
+                    }
+                }
+
+                // Data storage
+                $dates = collect();
+                $scores = collect();
+
+                // only get fully filled in sessions
+                foreach (Session::where('client_id', $user->id)->where('survlist_id', $survlist->id)->where('filled_status', 1)->get() as $session) {
+
+                    // Fill question results
+                    $results = [];
+                    foreach ($questions as $question) {
+                        if(Response::where('question_id', $question->id)->where('session_id', $session->id)->exists()) {
+                            $response = Response::where('question_id', $question->id)->where('session_id', $session->id)->get('score');
+                            array_push($results, $response[0]->score);
+                        }
+                    }
+
+                    $dates->push($session->created_at->toString());
+                    $scores->push($results);
+                    // array_push($dates, $session->created_at->toString());
+                    // array_push($scores, ['score', $results]);
+
+                }
+
+                $survlist->dates = $dates;
+                $survlist->scores = $scores;
+
+                // dd($survlist);
+
+
+                // $survlist->data = [$dates, ['scores' , $scores]];
             }
         }
 
-//        dd($user);
+        // dd($user);
 
-        $user->tableOne = collect();
-        $user->tableTwo = collect();
+        // $user->tableOne = collect();
+        // // $user->tableTwo = collect();
 
-        $ten = [0, 1, 2.5, 3, 4.75, 5, 6, 7.1, 8, 9];
+        // $ten = [0, 1, 2.5, 3, 4.75, 5, 6, 7.1, 8, 9];
 
-        // Fill table one
-        foreach ($ten as $number){
-            $user->tableOne->push($number);
-            $user->tableTwo->push($number);
-        }
+        // // Fill table one
+        // foreach ($ten as $survlists){
+        //     $user->tableOne->push($number);
+        //     // $user->tableTwo->push($number);
+        // }
 
-        $user->tableOne->labels = $user->tableOne;
-        $user->tableOne->data = $user->tableOne;
+        // $user->tableOne->labels = $user->tableOne;
+        // $user->tableOne->data = $user->tableOne;
+
+        // dd($user);
 
         return $user;
     }
