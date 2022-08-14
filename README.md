@@ -140,6 +140,10 @@ To keep the JavaScript up-to-date run:
         <a href="https://stackoverflow.com/questions/35147366">/check-if-a-value-exists-in-array-laravel-or-php</a></br>
         check if a value exists in array
     </li>
+    <li>
+        <a href="https://stackoverflow.com/questions/32693688">/remove-quot-from-json-using-laravel</a></br>
+        Use laravel eloquent controller data in JavaScript
+    </li>
 </ul>
 
 # <a>Other</a>
