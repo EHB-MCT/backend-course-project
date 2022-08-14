@@ -91,31 +91,40 @@ class UserController extends Controller
 
                 // Data storage
                 $dates = collect();
+                $questionsNames = collect();
                 $scores = collect();
 
                 // only get fully filled in sessions
                 foreach (Session::where('client_id', $user->id)->where('survlist_id', $survlist->id)->where('filled_status', 1)->get() as $session) {
+                    $dates->push($session->created_at->toString());
+                }
+
+                // Loop over questions
+                foreach ($questions as $question) {
 
                     // Fill question results
                     $results = [];
-                    foreach ($questions as $question) {
+
+                    // only get fully filled in sessions
+                    foreach (Session::where('client_id', $user->id)->where('survlist_id', $survlist->id)->where('filled_status', 1)->get() as $session) {
+
+                        // Get question response from certain sessions
                         if(Response::where('question_id', $question->id)->where('session_id', $session->id)->exists()) {
                             $response = Response::where('question_id', $question->id)->where('session_id', $session->id)->get('score');
                             array_push($results, $response[0]->score);
                         }
                     }
 
-                    $dates->push($session->created_at->toString());
+                    $questionsNames->push($question->question);
                     $scores->push($results);
-                    // array_push($dates, $session->created_at->toString());
-                    // array_push($scores, ['score', $results]);
 
                 }
 
                 $survlist->dates = $dates;
+                $survlist->questions = $questions;
                 $survlist->scores = $scores;
 
-                // dd($survlist);
+                // dd($user);
 
 
                 // $survlist->data = [$dates, ['scores' , $scores]];
