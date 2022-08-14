@@ -91,7 +91,7 @@ class UserController extends Controller
 
                 // Data storage
                 $dates = collect();
-                $questionsNames = collect();
+                $questionNames = collect();
                 $scores = collect();
 
                 // only get fully filled in sessions
@@ -115,39 +115,16 @@ class UserController extends Controller
                         }
                     }
 
-                    $questionsNames->push($question->question);
+                    $questionNames->push($question->question);
                     $scores->push($results);
 
                 }
 
                 $survlist->dates = $dates;
-                $survlist->questions = $questions;
+                $survlist->questions = $questionNames;
                 $survlist->scores = $scores;
-
-                // dd($user);
-
-
-                // $survlist->data = [$dates, ['scores' , $scores]];
             }
         }
-
-        // dd($user);
-
-        // $user->tableOne = collect();
-        // // $user->tableTwo = collect();
-
-        // $ten = [0, 1, 2.5, 3, 4.75, 5, 6, 7.1, 8, 9];
-
-        // // Fill table one
-        // foreach ($ten as $survlists){
-        //     $user->tableOne->push($number);
-        //     // $user->tableTwo->push($number);
-        // }
-
-        // $user->tableOne->labels = $user->tableOne;
-        // $user->tableOne->data = $user->tableOne;
-
-        // dd($user);
 
         return $user;
     }
@@ -225,37 +202,3 @@ function fillCaretaker($caretakers){
     }
     return $caretakers;
 }
-
-//$client->tableOne = collect();
-//$client->tableTwo = collect();
-//
-//$ten = [0, 1, 2.5, 3, 4.75, 5, 6, 7.1, 8, 9];
-//
-//// Fill table one
-//foreach ($ten as $number){
-//    $client->tableOne->push($number);
-//    $client->tableTwo->push($number);
-//}
-
-//        $client->sessions = Session::select('*')->where('client_id', $client->id)->where('filled_status', 1)->groupBy('survlist_id')->get();
-
-
-//// Put the session survlists in the survlist collection
-//$user->survlists = collect();
-//foreach ($user->sessions as $session){
-//    $user->survlists->push(Survlist::where('id', $session->survlist_id)->get());
-//}
-//// Limit all survlist to one of each
-//$user->survlists = $user->survlists->groupBy('id');
-//
-//// For each survlist make a chart part
-//for ($i = 0; $i < $user->survlists->count(); $i++){
-//    $variable = 'chart'.$i;
-//
-//    $dates = Session::where('client_id', $user->id)->where('filled_status', 1)->get('created_at');
-//    $user->$variable = $dates;
-//}
-////        foreach ($client->survlists as $survlist){
-////            $
-////            $survlist->dates = Session::where('client_id', $client->id)->where('filled_status', 1)->get('created_at');
-////        }
