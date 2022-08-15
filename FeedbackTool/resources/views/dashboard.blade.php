@@ -9,7 +9,7 @@
         You're logged in!
     </div>
 
-    @if(!$sessions || $sessions->count() == 0 )
+    @if(!$sessions || $sessions->count() == 0 || Auth::user()->can('moderate'))
         <div>
             Nothing to fill in!
         </div>

@@ -54,10 +54,11 @@ class UserController extends Controller
     public static function indexOnUserId ($id)
     {
         // Get the client with this id
-        if (User::firstWhere('id', $id)->where('caretaker_id', Auth::user()->getAuthIdentifier())->exists()){
+        if (User::firstWhere('id', $id)->where('caretaker_id', Auth::user()->getAuthIdentifier())->exists() || Auth::user()->can('admin') && !Auth::user()->hasRole('moderator')){
 
             // Get client
-            $user = User::firstWhere('id', $id);
+            $userFetch = User::where('id', $id)->get();
+            $user = $userFetch[0];
             
             // Get all filled sessions
             $user->sessions = Session::where('client_id', $user->id)->where('filled_status', 1)->get();
@@ -124,9 +125,10 @@ class UserController extends Controller
                 $survlist->questions = $questionNames;
                 $survlist->scores = $scores;
             }
+            return $user;
+        } else {
+            return null;
         }
-
-        return $user;
     }
 
     /**

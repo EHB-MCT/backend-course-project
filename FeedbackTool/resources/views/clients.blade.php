@@ -28,7 +28,8 @@
             </a>
 
         @endforeach
-
+        </br>
+        </br>
         <h2>
             {{ __('Moderators') }}
         </h2>
@@ -53,8 +54,10 @@
         @foreach ($users->caretakers as $caretaker)
 
             @can('moderate')
+                </br>
+                </br>
                 <h2>
-                    {{ __('Caretakers') }}
+                    {{ __('Caretaker') }}
                 </h2>
             @endcan
 
@@ -70,10 +73,10 @@
 
                 </a>
             @endif
-
-            <h2>
+            </br>
+            <h3>
                 {{ __('Clients') }}
-            </h2>
+            </h3>
             @foreach ($caretaker->clients as $client)
                 <a href="{{ route('client', ['id' => $client->id]) }}">
 
