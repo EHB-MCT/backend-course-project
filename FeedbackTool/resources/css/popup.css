@@ -1,0 +1,47 @@
+.popup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 90vh;
+    width: 50vw;
+}
+
+.half a,
+.popup button{
+    align-self: end;
+    padding: 10px 0;
+}
+
+div .center {
+    align-self: center;
+}
+
+.popup div {
+    width: 100%;
+}
+
+.popup div label {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    height: 60px;
+}
+
+.popup div label input[type=text],
+.popup div label input[type=email],
+.popup div label input[type=password] {
+    padding: 15px 0;
+    width: 50%;
+}
+
+.loginSubmit,
+.registerSubmit,
+.updatePasswordSubmit {
+    all: unset;
+    cursor: pointer;
+    margin-top: 40px;
+    width: 50%;
+    background-color: var(--maincolor);
+    text-align: center;
+}

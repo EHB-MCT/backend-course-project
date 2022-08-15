@@ -1,0 +1,41 @@
+@import "nav.css";
+@import "content.css";
+@import "list.css";
+@import "guest.css";
+@import "popup.css";
+
+*,
+body {
+    font-family: Roboto, serif;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Sizes */
+    --navheight: 80px;
+
+    /* Colours */
+    --maincolor: #87CEEB;
+    --logoutcolor: #ea6d6d;
+    --darker02: #0000001A;
+    --black: #000000;
+    --white: #ffffff;
+}
+
+input,
+select,
+textarea {
+    text-decoration: none;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+    padding: 16px;
+    color: var(--black);
+}
+
+a {
+    color: var(--black);
+    text-decoration: none;
+}

@@ -1,0 +1,13 @@
+header,
+main {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 50px 20%;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 600;
+    padding: 15px 0;
+}
