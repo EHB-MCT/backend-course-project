@@ -13,9 +13,9 @@
                     {{ __('Clients') }}
                 @endif
             </x-nav-link>
-            <x-nav-link :href="route('public-surveys')" :active="request()->routeIs('public-surveys')">
+            <!-- <x-nav-link :href="route('public-surveys')" :active="request()->routeIs('public-surveys')">
                 {{ __('Public-surveys') }}
-            </x-nav-link>
+            </x-nav-link> -->
             <x-nav-link :href="route('surveys')" :active="request()->routeIs('surveys', 'survey')">
                 @if(Auth::user()->can('moderate'))
                     {{ __('All surveys') }}

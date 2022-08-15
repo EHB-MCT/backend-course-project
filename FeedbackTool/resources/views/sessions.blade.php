@@ -81,26 +81,27 @@
         </ul>
     @endforeach
 
-    </br>
-    <h2>
-        {{ __('New session') }}
-    </h2>
-    </br>
-    <form action="{{ route('addSession') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+    @if($user->hasRole('caretaker'))
+        </br>
+        <h2>
+            {{ __('New session') }}
+        </h2>
+        </br>
+        <form action="{{ route('addSession') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-        <select name="client">
-            @foreach($user->clients as $client)
-                <option value="{{ $client->id }}">{{ $client->name }}</option>
-            @endforeach
-        </select>
-        <select name="survlist">
-            @foreach($user->survlists as $survlist)
-                <option value="{{ $survlist->id }}">{{ $survlist->list_name }}</option>
-            @endforeach
-        </select>
+            <select name="client">
+                @foreach($user->clients as $client)
+                    <option value="{{ $client->id }}">{{ $client->name }}</option>
+                @endforeach
+            </select>
+            <select name="survlist">
+                @foreach($user->survlists as $survlist)
+                    <option value="{{ $survlist->id }}">{{ $survlist->list_name }}</option>
+                @endforeach
+            </select>
 
-        <button type="submit">submit</button>
-    </form>
-
+            <button type="submit">submit</button>
+        </form>
+    @endif
 </x-app-layout>

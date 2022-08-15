@@ -35,36 +35,37 @@ class ResponseController extends Controller
     public static function sessionOnId($id)
     {
         $user = Auth::user();
-        // Get active sessions if posible
 
-        // Check if session exists and isn't filled in or closed
-        if ($user->session()->where('open_status', 0)->where('filled_status', 0)->where('id', $id)->exists()) {
+        if($user->hasRole('caretaker') || $user->hasRole('client')){
+            // Check if session exists and isn't filled in or closed
+            if ($user->session()->where('open_status', 0)->where('filled_status', 0)->where('id', $id)->exists()) {
 
-            // Get the chosen session
-            $user->session = $user->session()->where('open_status', 0)->where('filled_status', 0)->where('id', $id)->get();
+                // Get the chosen session
+                $user->session = $user->session()->where('open_status', 0)->where('filled_status', 0)->where('id', $id)->get();
 
-            // Get the survey list
-            $user->survlist = $user->session[0]->survlist()->get();
+                // Get the survey list
+                $user->survlist = $user->session[0]->survlist()->get();
 
-            // Get the surveys
-            $user->surveys = collect();
-            foreach ($user->survlist[0]->survey_ids()->get('survey_id') as $id) {
-                $user->surveys->push(Survey::firstWhere('id', $id->survey_id));
-            }
+                // Get the surveys
+                $user->surveys = collect();
+                foreach ($user->survlist[0]->survey_ids()->get('survey_id') as $id) {
+                    $user->surveys->push(Survey::firstWhere('id', $id->survey_id));
+                }
 
-            // Get the survey questions
-            foreach ($user->surveys as $survey) {
-                $surveyQuestions = $survey->question()->get();
-                foreach ($surveyQuestions as $question) {
+                // Get the survey questions
+                foreach ($user->surveys as $survey) {
+                    $surveyQuestions = $survey->question()->get();
+                    foreach ($surveyQuestions as $question) {
 
-                    // If question is not filled in, return it as current question
-                    if (!Response::where('question_id', $question->id)->where('session_id', $user->session[0]->id)->exists()) {
-                        return $question;
+                        // If question is not filled in, return it as current question
+                        if (!Response::where('question_id', $question->id)->where('session_id', $user->session[0]->id)->exists()) {
+                            return $question;
+                        }
                     }
                 }
+            } else {
+                return null;
             }
-        } else {
-            return null;
         }
     }
 
